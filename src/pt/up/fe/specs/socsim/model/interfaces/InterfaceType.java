@@ -1,4 +1,4 @@
-package pt.up.fe.specs.socsim.model;
+package pt.up.fe.specs.socsim.model.interfaces;
 
 public enum InterfaceType {
     REG("reg"),
