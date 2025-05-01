@@ -1,0 +1,33 @@
+{
+  "module": {
+    "name": "specsitf",
+    "description": "A simple module which forwards register data to a C function.",
+    "parameters": [],
+    "interfaces": [
+      {
+        "type": "clock",
+        "signals": [ { "name": "clk", "io": "input", "edge": "pos" } ]
+      },
+      {
+        "type": "reset",
+        "signals": [ { "name": "rst", "io": "input", "active": "low" } ]
+      },
+      {
+        "type": "reg",
+        "signals": [
+          { "name": "reg_req", "io": "input", "role": "request" },
+          { "name": "reg_res", "io": "output", "role": "response" }
+        ]
+      },
+      {
+        "type": "obi",
+        "signals": [
+          { "name": "master_req", "io": "output", "role": "request" },
+          { "name": "master_res", "io": "input", "role": "response" },
+          { "name": "slave_req", "io": "input", "role": "request" },
+          { "name": "slave_res", "io": "output", "role": "response" }
+        ]
+      }
+    ]
+  }
+}
