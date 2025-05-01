@@ -1,4 +1,4 @@
-package pt.up.fe.specs.socsim.model.enums;
+package pt.up.fe.specs.socsim.model;
 
 public enum Direction {
     INPUT("input"),
