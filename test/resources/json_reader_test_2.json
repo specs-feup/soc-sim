@@ -1,0 +1,29 @@
+{
+  "name": "NieR Automata",
+  "year": 2017,
+  "peak": true,
+  "score": 10.0,
+  "characters": [
+    {
+      "name": "2B",
+      "org": "YoRHa",
+      "race": "Android",
+      "weapon": "Virtuous Contract",
+      "type": "Executioner"
+    },
+    {
+      "name": "9S",
+      "org": "YoRHa",
+      "race": "Android",
+      "weapon": "Cruel Oath",
+      "type": "Scanner"
+    },
+    {
+      "name": "A2",
+      "org": "N/A (YoRHa deserter)",
+      "race": "Android",
+      "weapon": "Type-4O Sword",
+      "type": "Attacker"
+    }
+  ]
+}
