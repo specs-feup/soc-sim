@@ -8,10 +8,6 @@ import java.util.Optional;
 
 public class Launcher {
     public static void main(String[] args) throws IOException {
-        JsonReader reader = new JsonReader("config.json");
-
-        String type = reader.getArrayElement("module.interfaces", 0).get().getString("type").get();
-
-        System.out.println("Type: " + type);
+        System.out.println("Hello, world!");
     }
 }
