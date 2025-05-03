@@ -1,12 +1,12 @@
-package pt.up.fe.specs.socsim.model.signal;
+package pt.up.fe.specs.socsim.model.signal.enums;
 
-public enum IOType {
+public enum IO {
     INPUT("input"),
     OUTPUT("output");
 
     private final String io;
 
-    IOType(String io) {
+    IO(String io) {
         this.io = io;
     }
 
@@ -14,8 +14,8 @@ public enum IOType {
         return this.io;
     }
 
-    public static IOType fromString(String ioString) {
-        for (IOType type : IOType.values()) {
+    public static IO fromString(String ioString) {
+        for (IO type : IO.values()) {
             if (type.io.equals(ioString)) {
                 return type;
             }

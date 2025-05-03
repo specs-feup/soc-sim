@@ -1,4 +1,4 @@
-package pt.up.fe.specs.socsim.model.reset;
+package pt.up.fe.specs.socsim.model.signal.enums;
 
 public enum Active {
     HIGH("high"),

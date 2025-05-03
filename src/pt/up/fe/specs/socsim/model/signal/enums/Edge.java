@@ -1,4 +1,4 @@
-package pt.up.fe.specs.socsim.model.clock;
+package pt.up.fe.specs.socsim.model.signal.enums;
 
 public enum Edge {
     POS("pos"),
