@@ -1,3 +1,2 @@
 package pt.up.fe.specs.socsim.model.signal;
-
-public sealed interface Signal permits ClockSignal, ObiSignal, RegSignal, ResetSignal { }
+public record Signal(String name, SignalIO io, SignalType type) { }

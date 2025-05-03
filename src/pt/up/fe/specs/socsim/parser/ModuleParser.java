@@ -1,60 +1,45 @@
 package pt.up.fe.specs.socsim.parser;
 
 import pt.up.fe.specs.socsim.model.Module;
-import pt.up.fe.specs.socsim.model.interfaces.Interface;
-import pt.up.fe.specs.socsim.model.interfaces.InterfaceType;
-import pt.up.fe.specs.socsim.model.signal.*;
-import pt.up.fe.specs.socsim.model.signal.enums.Active;
-import pt.up.fe.specs.socsim.model.signal.enums.Edge;
-import pt.up.fe.specs.socsim.model.signal.enums.IO;
-import pt.up.fe.specs.socsim.model.signal.enums.Role;
+import pt.up.fe.specs.socsim.model.signal.Signal;
+import pt.up.fe.specs.socsim.model.signal.SignalIO;
+import pt.up.fe.specs.socsim.model.signal.SignalType;
 import pt.up.fe.specs.socsim.reader.JsonReader;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ModuleParser {
-    public static Module parse(JsonReader reader) {
-        JsonReader node = reader.getObject("module").orElseThrow(() -> new IllegalArgumentException("Missing 'module' object!"));
+    private Module module;
 
-        String name = node.getStringOrDefault("name", "unknown");
-        String description = node.getStringOrDefault("description", "unknown");
+    private final JsonReader reader;
 
-        List<Interface> interfaces = parseInterfaces(node.getArray("interfaces"));
-
-        return new Module(name, description, interfaces);
+    public ModuleParser(String resource) throws IOException {
+        this.reader = new JsonReader(resource).getObject("module").orElseThrow();
     }
 
-    private static List<Interface> parseInterfaces(List<JsonReader> readers) {
-        List<Interface> interfaces = new ArrayList<>();
-
-        for (JsonReader rd : readers) {
-            InterfaceType type = InterfaceType.fromString(rd.getStringOrDefault("type", "unknown"));
-
-            List<Signal> signals = parseSignals(type, rd.getArray("signals"));
-
-            interfaces.add(new Interface(type, signals));
-        }
-
-        return interfaces;
-    }
-
-    private static List<Signal> parseSignals(InterfaceType type, List<JsonReader> readers) {
+    private List<Signal> parseSignals() {
         List<Signal> signals = new ArrayList<>();
 
-        for (JsonReader rd : readers) {
-            String name = rd.getStringOrDefault("name", "unknown");
-            IO io = IO.fromString(rd.getStringOrDefault("io", "unknown"));
+        List<JsonReader> signalsReader = this.reader.getArray("signals");
 
-            switch (type) {
-                case CLK -> signals.add(new ClockSignal(name, io, Edge.fromString(rd.getStringOrDefault("edge", "unknown"))));
-                case RST -> signals.add(new ResetSignal(name, io, Active.fromString(rd.getStringOrDefault("active", "unknown"))));
-                case REG -> signals.add(new RegSignal(name, io, Role.fromString(rd.getStringOrDefault("role", "unknown"))));
-                case OBI -> signals.add(new ObiSignal(name, io, Role.fromString(rd.getStringOrDefault("role", "unknown"))));
-                default -> throw new IllegalArgumentException("Found an interface of unknown type: " + type.getType());
-            }
-        }
+        signalsReader.forEach(
+            signal -> signals.add( new Signal(
+                signal.getStringOrDefault("name", "unknown"),
+                SignalIO.fromString(signal.getStringOrDefault("io", "unknown")),
+                SignalType.fromString(signal.getStringOrDefault("type", "unknown"))
+            ))
+        );
 
         return signals;
+    }
+
+    public Module parse() {
+        String name = this.reader.getStringOrDefault("name", "unknown");
+        String description = this.reader.getStringOrDefault("description", "unknown");
+        List<Signal> signals = this.parseSignals();
+
+        return new Module(name, description, signals);
     }
 }

@@ -3,31 +3,23 @@
     "name": "specsitf",
     "description": "A simple module which forwards register data to a C function.",
     "parameters": [],
-    "interfaces": [
-      {
-        "type": "clock",
-        "signals": [ { "name": "clk", "io": "input", "edge": "pos" } ]
+    "signals": [
+      { "name": "clk_i", "io": "input", "type": "logic" },
+      { "name": "rst_ni", "io": "input", "type": "logic" },
+      { "name": "reg_req_i", "io": "input", "type": "reg_req_t" },
+      { "name": "reg_rsp_o", "io": "output", "type": "reg_rsp_t" },
+      { "name": "masters_req_o", "io": "output", "type": "obi_req_t" },
+      { "name": "masters_resp_i", "io": "input", "type": "obi_resp_t" },
+      { "name": "slave_req_i", "io": "input", "type": "obi_req_t" },
+      { "name": "slave_resp_o", "io": "input", "type": "obi_resp_t" }
+    ],
+    "dpi" : {
+      "send": {
+
       },
-      {
-        "type": "reset",
-        "signals": [ { "name": "rst", "io": "input", "active": "low" } ]
-      },
-      {
-        "type": "reg",
-        "signals": [
-          { "name": "reg_req", "io": "input", "role": "request" },
-          { "name": "reg_res", "io": "output", "role": "response" }
-        ]
-      },
-      {
-        "type": "obi",
-        "signals": [
-          { "name": "master_req", "io": "output", "role": "request" },
-          { "name": "master_res", "io": "input", "role": "response" },
-          { "name": "slave_req", "io": "input", "role": "request" },
-          { "name": "slave_res", "io": "output", "role": "response" }
-        ]
+      "recv": {
+
       }
-    ]
+    }
   }
 }
