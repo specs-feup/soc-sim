@@ -1,5 +1,6 @@
 package pt.up.fe.specs.socsim;
 
+import pt.up.fe.specs.socsim.emitter.ModuleEmitter;
 import pt.up.fe.specs.socsim.model.Module;
 import pt.up.fe.specs.socsim.model.signal.Signal;
 import pt.up.fe.specs.socsim.parser.ModuleParser;
@@ -9,16 +10,15 @@ import java.io.IOException;
 
 public class Launcher {
     public static void main(String[] args) throws IOException {
-        String config = "/config.json";
-
-        ModuleParser parser = new ModuleParser(config);
+        String resource = "/config.json";
+        ModuleParser parser = new ModuleParser(resource);
 
         Module module = parser.parse();
 
-        System.out.println("Module name: " + module.name());
-        System.out.println("Module description: " + module.description());
-        for (Signal signal : module.signals()) {
-            System.out.println("name: " + signal.name() + ", io: " + signal.io() + ", type: " + signal.type());
-        }
+        ModuleEmitter emitter = new ModuleEmitter(module);
+
+        String sv = emitter.emitToString();
+
+        System.out.println(sv);
     }
 }
