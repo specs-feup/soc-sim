@@ -1,0 +1,71 @@
+group module;
+
+interface(module, registers, hasReg, hasObiMaster, hasObiSlave, dpiSend, dpiRecv) ::= <<
+module <module.name> #(
+    parameter type reg_req_t  = logic,
+    parameter type reg_rsp_t  = logic,
+    parameter type obi_req_t  = logic,
+    parameter type obi_resp_t = logic,
+) (
+    input logic clk_i,
+    input logic rst_ni,
+    <if(hasReg)>
+    input reg_req_t reg_req_i,
+    output reg_rsp_t reg_rsp_o,
+    <endif>
+    <if(hasObiMaster)>
+    output obi_req_t masters_req_o,
+    output obi_resp_t masters_resp_i,
+    <endif>
+    <if(hasObiSlave)>
+    input obi_req_t slave_req_i,
+    output obi_resp_t slave_resp_o,
+    <endif>
+);
+
+  <registers:{ reg | <reg.type> [<reg.widthMinusOne>:0] <reg.name>;
+  }>
+
+  import "DPI-C" function void <module.name>_comm_init();
+  import "DPI-C" function void <module.name>_comm_free();
+  <if(dpiSend)>
+  import "DPI-C" function void <module.name>_comm_send();
+  <endif>
+  <if(dpiRecv)>
+  import "DPI-C" function int <module.name>_comm_recv();
+  <endif>
+
+  initial begin
+    <module.name>_comm_init();
+    <registers:{ reg | <reg.name> = <reg.initial>;
+    }>
+  end
+
+  final begin
+    <module.name>_comm_free();
+  end
+
+  <if(dpiSend)>
+  always_ff @(posedge clk_i or negedge rst_ni) begin
+    if (!rst_ni) begin
+    end else begin
+      <dpiSend:{ s | <module.name>_comm_send(<s>);
+      }>
+    end
+  end
+  <endif>
+
+  <if(dpiRecv)>
+  always_ff @(posedge clk_i or negedge rst_ni) begin
+    if (!rst_ni) begin
+      <dpiRecv:{ s | <s> \<= 32'b0;
+      }>
+    end else begin
+      <dpiRecv:{ s | <s> \<= <module.name>_comm_recv();
+      }>
+    end
+  end
+  <endif>
+
+endmodule
+>>
