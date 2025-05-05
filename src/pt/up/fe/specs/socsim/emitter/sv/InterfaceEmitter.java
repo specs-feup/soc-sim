@@ -72,12 +72,12 @@ public class InterfaceEmitter implements Emitter {
         if (!this.module.dpi().recv().isEmpty())
             this.sb.append("  import \"DPI-C\" function int ").append(String.format("%s_comm_recv();\n", module.name()));
 
-        this.sb.append("\n\n");
+        this.sb.append("\n");
     }
 
     private void emitInitialBlock() {
         this.sb.append("  initial begin\n");
-        this.sb.append("   ").append(String.format("%s_comm_init();\n", module.name()));
+        this.sb.append("    ").append(String.format("%s_comm_init();\n", module.name()));
 
         for (Register reg : module.registers())
             this.sb.append("    ")
@@ -93,6 +93,42 @@ public class InterfaceEmitter implements Emitter {
         this.sb.append("  end\n\n");
     }
 
+    private void emitDpiSendBlock() {
+        if (this.module.dpi().send().isEmpty()) return;
+
+        this.sb.append("  always_ff @(posedge clk_i or negedge rst_ni) begin\n");
+        this.sb.append("    if (!rst_ni) begin\n").append("    end else begin\n");
+
+        for (String s : this.module.dpi().send()) {
+            this.sb.append("    ").append(String.format("  %s_comm_send(", this.module.name())).append(s).append(");\n");
+        }
+
+        this.sb.append("    end\n").append("  end\n\n");
+    }
+
+    private void emitDpiRecvBlock() {
+        if (this.module.dpi().recv().isEmpty()) return;
+
+        this.sb.append("  always_ff @(posedge clk_i or negedge rst_ni) begin\n")
+                .append("    if (!rst_ni) begin\n");
+
+        for (String s : this.module.dpi().recv()) {
+            this.sb.append("      ").append(s).append(" <= 32'b0;\n");
+        }
+
+        this.sb.append("    end else begin\n");
+
+        for (String s : this.module.dpi().recv()) {
+            this.sb.append("      ").append(s).append(" <= ").append(String.format("%s_comm_recv();\n", this.module.name()));
+        }
+
+        this.sb.append("    end\n").append("  end\n\n");
+    }
+
+    private void emitFooter() {
+        this.sb.append("endmodule\n");
+    }
+
     @Override
     public String emit() {
         this.emitHeader();
@@ -102,6 +138,9 @@ public class InterfaceEmitter implements Emitter {
         this.emitDpiImports();
         this.emitInitialBlock();
         this.emitFinalBlock();
+        this.emitDpiSendBlock();
+        this.emitDpiRecvBlock();
+        this.emitFooter();
 
         return this.sb.toString();
     }
