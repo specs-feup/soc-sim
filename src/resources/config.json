@@ -1,25 +1,17 @@
 {
   "module": {
     "name": "specsitf",
-    "description": "A simple module which forwards register data to a C function.",
-    "parameters": [],
-    "signals": [
-      { "name": "clk_i", "io": "input", "type": "logic" },
-      { "name": "rst_ni", "io": "input", "type": "logic" },
-      { "name": "reg_req_i", "io": "input", "type": "reg_req_t" },
-      { "name": "reg_rsp_o", "io": "output", "type": "reg_rsp_t" },
-      { "name": "masters_req_o", "io": "output", "type": "obi_req_t" },
-      { "name": "masters_resp_i", "io": "input", "type": "obi_resp_t" },
-      { "name": "slave_req_i", "io": "input", "type": "obi_req_t" },
-      { "name": "slave_resp_o", "io": "input", "type": "obi_resp_t" }
+    "interfaces": {
+      "reg": true,
+      "obi_master": true,
+      "obi_slave": true
+    },
+    "registers": [
+      { "name": "data_reg", "type": "logic", "width": 32, "initial": 0 }
     ],
-    "dpi" : {
-      "send": {
-
-      },
-      "recv": {
-
-      }
+    "dpi": {
+      "send": ["data_reg"],
+      "recv": ["data_reg"]
     }
   }
 }

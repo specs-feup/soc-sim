@@ -1,24 +1,35 @@
 package pt.up.fe.specs.socsim;
 
-import pt.up.fe.specs.socsim.emitter.ModuleEmitter;
 import pt.up.fe.specs.socsim.model.Module;
-import pt.up.fe.specs.socsim.model.signal.Signal;
+import pt.up.fe.specs.socsim.model.dpi.DPI;
+import pt.up.fe.specs.socsim.model.register.Register;
 import pt.up.fe.specs.socsim.parser.ModuleParser;
-import pt.up.fe.specs.socsim.reader.JsonReader;
 
 import java.io.IOException;
+import java.util.List;
 
 public class Launcher {
     public static void main(String[] args) throws IOException {
+
         String resource = "/config.json";
-        ModuleParser parser = new ModuleParser(resource);
 
-        Module module = parser.parse();
+        Module module = ModuleParser.parse(resource);
 
-        ModuleEmitter emitter = new ModuleEmitter(module);
+        System.out.println("Module name: " + module.name());
+        System.out.println("Module REG: " + module.interfaces().reg());
+        System.out.println("Module OBI Slave: " + module.interfaces().obiSlave());
+        System.out.println("Module OBI Master: " + module.interfaces().obiMaster());
 
-        String sv = emitter.emitToString();
+        List<Register> registers = module.registers();
+        registers.forEach(reg -> System.out.println(
+            "Register name: " + reg.name() + ", type: " + reg.type().toString() + ", width: " + reg.width() + ", initial: " + reg.initial())
+        );
 
-        System.out.println(sv);
+        DPI dpi = module.dpi();
+        System.out.println("DPI send: ");
+        dpi.send().forEach(System.out::println);
+
+        System.out.println("DPI recv: ");
+        dpi.recv().forEach(System.out::println);
     }
 }
