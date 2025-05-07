@@ -2,6 +2,7 @@ package pt.up.fe.specs.socsim;
 
 import pt.up.fe.specs.socsim.emitter.config.VltFileEmitter;
 import pt.up.fe.specs.socsim.emitter.dpi.DpiHeaderEmitter;
+import pt.up.fe.specs.socsim.emitter.dpi.DpiSourceEmitter;
 import pt.up.fe.specs.socsim.model.Module;
 import pt.up.fe.specs.socsim.parser.ModuleParser;
 
@@ -14,7 +15,7 @@ public class Launcher {
 
         Module module = ModuleParser.parse(resource);
 
-        DpiHeaderEmitter emitter = new DpiHeaderEmitter(module);
+        DpiSourceEmitter emitter = new DpiSourceEmitter(module);
 
         System.out.println(emitter.emit());
     }

@@ -1,0 +1,72 @@
+source(module, dpi) ::= <<
+#include "<module.lowerName>dpi.h"
+#include "backend/cipc_zmq.h"
+#include \<cipc.h>
+#include \<stdio.h>
+#include \<stdlib.h>
+#include \<string.h>
+#include \<zmq.h>
+
+#define <module.upperName>_ADDRESS "tcp://*:5555"
+#define <module.upperName>_BUFFER_SIZE 1024
+
+static cipc **<module.lowerName>_server = NULL;
+
+void <module.lowerName>_comm_init() {
+  <module.lowerName>_server = (cipc**)malloc(sizeof(cipc*));
+  if (!<module.lowerName>_server) {
+    printf("Failed to allocate memory for server!\\n");
+
+    exit(1);
+  }
+
+  *<module.lowerName>_server = cipc_create(CIPC_PROTOCOL_ZMQ);
+  if (!(*<module.lowerName>_server)) {
+    printf("Failed to create server!\\n");
+
+    exit(1);
+  }
+
+  cipc_zmq_config *config = cipc_zmq_config_rep(<module.upperName>_ADDRESS);
+  if ((*<module.lowerName>_server)->init(&(*<module.lowerName>_server)->context, config) != CIPC_OK) {
+    printf("Failed to initialize server!\\n");
+    <module.lowerName>_comm_free();
+    exit(1);
+  }
+}
+
+void <module.lowerName>_comm_free() {
+  if (<module.lowerName>_server) {
+    if (*<module.lowerName>_server) {
+      cipc_free(*<module.lowerName>_server);
+    }
+
+    free(<module.lowerName>_server);
+
+    <module.lowerName>_server = NULL;
+  }
+}
+
+void <module.lowerName>_comm_send(<dpi.sendParams>) {
+  char buffer[<module.upperName>_BUFFER_SIZE] = {0};
+  size_t length = snprintf(buffer, sizeof(buffer), "<dpi.sendFormat>", <dpi.sendArgs>);
+
+  if ((*<module.lowerName>_server)->send((*<module.lowerName>_server)->context, buffer, length) != CIPC_OK) {
+    printf("Failed to send reply!\\n");
+  } else {
+    printf("Sent: <dpi.sendPrint>\\n", <dpi.sendArgs>);
+  }
+}
+
+void <module.lowerName>_comm_recv(<dpi.recvParams>) {
+  char buffer[<module.upperName>_BUFFER_SIZE] = {0};
+
+  if ((*<module.lowerName>_server)->recv((*<module.lowerName>_server)->context, buffer, sizeof(buffer)) != CIPC_OK) {
+    printf("Failed to receive message!\\n");
+  }
+
+  if (sscanf(buffer, "<dpi.recvFormat>", <dpi.recvArgs>) != <dpi.numRegs>) {
+    printf("Failed to parse received data!\\n");
+  }
+}
+>>
