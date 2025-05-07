@@ -1,4 +1,25 @@
 package pt.up.fe.specs.socsim.emitter.config;
 
-public class VltFileEmitter {
+import pt.up.fe.specs.socsim.emitter.Emitter;
+
+public class VltFileEmitter implements Emitter {
+    private final String moduleName;
+
+    public VltFileEmitter(String moduleName) {
+        this.moduleName = moduleName;
+    }
+
+    @Override
+    public String emit() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("\n\n");
+        sb.append("`verilator_config\n\n");
+
+        sb.append("lint_off -rule UNUSED file ")
+                .append(String.format("\"*/%s/%s.sv\"", this.moduleName, this.moduleName))
+                .append(" -match \"*\"");
+
+        return sb.toString();
+    }
 }

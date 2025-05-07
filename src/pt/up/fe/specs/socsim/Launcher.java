@@ -1,6 +1,7 @@
 package pt.up.fe.specs.socsim;
 
 import pt.up.fe.specs.socsim.emitter.config.CoreFileEmitter;
+import pt.up.fe.specs.socsim.emitter.config.VltFileEmitter;
 import pt.up.fe.specs.socsim.emitter.sv.InterfaceEmitter;
 import pt.up.fe.specs.socsim.model.Module;
 import pt.up.fe.specs.socsim.model.dpi.DPI;
@@ -17,8 +18,7 @@ public class Launcher {
 
         Module module = ModuleParser.parse(resource);
 
-        CoreFileEmitter emitter = new CoreFileEmitter(module.name(), "core-v-mini-mcu iffifo peripheral");
-        emitter.withFile("specsitf.sv", "systemVerilogSource", null);
+        VltFileEmitter emitter = new VltFileEmitter(module.name());
 
         System.out.println(emitter.emit());
     }
