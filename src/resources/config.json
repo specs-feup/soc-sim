@@ -8,7 +8,8 @@
       "obi_slave": true
     },
     "registers": [
-      { "name": "data_reg", "type": "logic", "width": 32, "initial": 0 }
+      { "name": "data_reg", "type": "logic", "width": 32, "initial": 0 },
+      { "name":  "data_reg2", "type": "logic", "width": 32, "initial": 1}
     ],
     "dpi": {
       "send": ["data_reg"],

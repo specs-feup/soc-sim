@@ -1,5 +1,6 @@
 package pt.up.fe.specs.socsim;
 
+import pt.up.fe.specs.socsim.emitter.config.CoreFileEmitter;
 import pt.up.fe.specs.socsim.emitter.sv.InterfaceEmitter;
 import pt.up.fe.specs.socsim.model.Module;
 import pt.up.fe.specs.socsim.model.dpi.DPI;
@@ -16,8 +17,10 @@ public class Launcher {
 
         Module module = ModuleParser.parse(resource);
 
-        InterfaceEmitter emitter = new InterfaceEmitter(module);
+        CoreFileEmitter emitter = new CoreFileEmitter(module.name());
 
-        System.out.println(emitter.emit());
+        System.out.println(emitter.emit("UART-DPI",
+                "      - specsitfdpi.c: { file_type: cppSource }\n      - specsitfdpi.h : { file_type: cppSource, is_include_file: true } ",
+                null));
     }
 }
