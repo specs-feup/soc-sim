@@ -1,8 +1,7 @@
 package pt.up.fe.specs.socsim;
 
-import pt.up.fe.specs.socsim.emitter.config.VltFileEmitter;
-import pt.up.fe.specs.socsim.emitter.dpi.DpiHeaderEmitter;
-import pt.up.fe.specs.socsim.emitter.dpi.DpiSourceEmitter;
+import pt.up.fe.specs.socsim.emitter.dpi.instances.DpiHeaderEmitter;
+import pt.up.fe.specs.socsim.emitter.dpi.instances.DpiSourceEmitter;
 import pt.up.fe.specs.socsim.model.Module;
 import pt.up.fe.specs.socsim.parser.ModuleParser;
 
