@@ -63,8 +63,8 @@ public class ModuleParser {
         String name = parseName(reader);
         Interfaces interfaces = parseInterfaces(reader);
         List<Register> registers = parseRegisters(reader);
-        DPI dpi = parseDPI(reader);
+        // DPI dpi = parseDPI(reader);
 
-        return new Module(name, interfaces, registers, dpi);
+        return new Module(name, interfaces, registers, null);
     }
 }

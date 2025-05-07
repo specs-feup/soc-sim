@@ -11,17 +11,7 @@ public class CoreFileEmitter implements Emitter {
     private final List<FileEntry> files = new ArrayList<>();
     private String version = "";
 
-    private static class FileEntry {
-        final String name;
-        final String type;
-        final Boolean isInclude;
-
-        FileEntry(String name, String type, Boolean isInclude) {
-            this.name = name;
-            this.type = type;
-            this.isInclude = isInclude;
-        }
-    }
+    private record FileEntry(String name, String type, Boolean isInclude) { }
 
     public CoreFileEmitter(String moduleName, String description) {
         this.moduleName = moduleName;
