@@ -2,29 +2,74 @@ package pt.up.fe.specs.socsim.emitter.config;
 
 import pt.up.fe.specs.socsim.emitter.Emitter;
 
-public class CoreFileEmitter {
-    private final String moduleName;
-    private final StringBuilder sb;
+import java.util.ArrayList;
+import java.util.List;
 
-    public CoreFileEmitter(String moduleName) {
-        this.moduleName = moduleName;
-        this.sb = new StringBuilder();
+public class CoreFileEmitter implements Emitter {
+    private final String moduleName;
+    private final String description;
+    private final List<FileEntry> files = new ArrayList<>();
+    private String version = "";
+
+    private static class FileEntry {
+        final String name;
+        final String type;
+        final Boolean isInclude;
+
+        FileEntry(String name, String type, Boolean isInclude) {
+            this.name = name;
+            this.type = type;
+            this.isInclude = isInclude;
+        }
     }
 
-    public String emit(String description, String files, String filetype) {
-        this.sb.append("CAPI=2:\n\n")
-                .append("name: ").append(String.format("example:ip:%s\n", this.moduleName))
-                .append("description: ").append(description).append("\n\n")
-                .append("filesets:\n  files_rtl:\n    files:\n").append(files);
+    public CoreFileEmitter(String moduleName, String description) {
+        this.moduleName = moduleName;
+        this.description = description;
+    }
 
-        this.sb.append("\n\n");
+    public CoreFileEmitter withVersion(String version) {
+        this.version = version;
 
-        if (filetype != null) {
-            this.sb.append("      ").append(filetype);
+        return this;
+    }
+
+    public CoreFileEmitter withFile(String fileName, String type, Boolean isInclude) {
+        this.files.add(new FileEntry(fileName, type, isInclude));
+
+        return this;
+    }
+
+    @Override
+    public String emit() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("CAPI=2:\n\n");
+
+        sb.append("name: \"").append("example:ip:").append(this.moduleName);
+        if (!version.isEmpty()) {
+            sb.append(":").append(this.version);
+        }
+        sb.append("\"\n");
+
+        sb.append("description: \"").append(description).append("\"\n\n");
+
+        sb.append("filesets:\n  files_rtl:\n     files:\n");
+        for (FileEntry file : this.files) {
+            sb.append("      - ");
+            if (file.isInclude != null || file.type.contains("Source")) {
+                sb.append(file.name).append(": { file_type: ").append(file.type);
+                if (file.isInclude != null) {
+                    sb.append(", is_include_file: ").append(file.isInclude);
+                }
+                sb.append(" }\n");
+            } else {
+                sb.append(file.name).append("\n");
+            }
         }
 
-        this.sb.append("targets:\n  default:  \n    filesets:  \n      - files_rtl");
+        sb.append("\ntargets:\n  default:\n    filesets:\n      - files_rtl");
 
-        return this.sb.toString();
+        return sb.toString();
     }
 }

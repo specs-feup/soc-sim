@@ -17,10 +17,9 @@ public class Launcher {
 
         Module module = ModuleParser.parse(resource);
 
-        CoreFileEmitter emitter = new CoreFileEmitter(module.name());
+        CoreFileEmitter emitter = new CoreFileEmitter(module.name(), "core-v-mini-mcu iffifo peripheral");
+        emitter.withFile("specsitf.sv", "systemVerilogSource", null);
 
-        System.out.println(emitter.emit("UART-DPI",
-                "      - specsitfdpi.c: { file_type: cppSource }\n      - specsitfdpi.h : { file_type: cppSource, is_include_file: true } ",
-                null));
+        System.out.println(emitter.emit());
     }
 }
