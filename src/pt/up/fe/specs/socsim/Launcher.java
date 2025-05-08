@@ -4,6 +4,8 @@ import pt.up.fe.specs.socsim.emitter.template.app.SwAppEmitter;
 import pt.up.fe.specs.socsim.emitter.template.config.DpiCoreFileEmitter;
 import pt.up.fe.specs.socsim.emitter.template.config.VerilogCoreFileEmitter;
 import pt.up.fe.specs.socsim.model.Module;
+import pt.up.fe.specs.socsim.modifier.verilog.TestHarnessModifier;
+import pt.up.fe.specs.socsim.modifier.verilog.TestHarnessPkgModifier;
 import pt.up.fe.specs.socsim.parser.ModuleParser;
 
 import java.io.IOException;
@@ -14,8 +16,8 @@ public class Launcher {
 
         Module module = ModuleParser.parse(resource);
 
-        VerilogCoreFileEmitter emitter = new VerilogCoreFileEmitter(module);
+        TestHarnessPkgModifier modifier = new TestHarnessPkgModifier(module, "data/test_harness_pkg.sv");
 
-        System.out.println(emitter.emitToString());
+        System.out.println(modifier.modifyToString());
     }
 }
