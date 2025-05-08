@@ -1,6 +1,8 @@
 {
   "module": {
     "name": "specsitf",
+    "offset": "0x05000",
+    "size": "100",
     "interfaces": {
       "reg": true,
       "obi_master": false,

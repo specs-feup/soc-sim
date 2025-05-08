@@ -7,4 +7,4 @@ import pt.up.fe.specs.socsim.model.register.Register;
 
 import java.util.List;
 
-public record Module(String name, Interfaces interfaces, List<Register> registers, DPI dpi) { }
+public record Module(String name, Interfaces interfaces, List<Register> registers, Integer offset, Integer size) { }

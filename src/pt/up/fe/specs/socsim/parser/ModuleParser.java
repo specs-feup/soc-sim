@@ -48,13 +48,12 @@ public class ModuleParser {
         return registers;
     }
 
-    private static DPI parseDPI(JsonReader reader) {
-        JsonReader dpiReader = reader.getObject("dpi").orElseThrow();
+    private static Integer parseOffset(JsonReader reader) {
+        return reader.getIntOrDefault("offset", 0);
+    }
 
-        List<String> send = dpiReader.getStringList("send").orElseGet(ArrayList::new);
-        List<String> recv = dpiReader.getStringList("recv").orElseGet(ArrayList::new);
-
-        return new DPI(send, recv);
+    private static Integer parseSize(JsonReader reader) {
+        return reader.getIntOrDefault("size", 0);
     }
 
     public static Module parse(String resource) throws IOException {
@@ -63,8 +62,9 @@ public class ModuleParser {
         String name = parseName(reader);
         Interfaces interfaces = parseInterfaces(reader);
         List<Register> registers = parseRegisters(reader);
-        // DPI dpi = parseDPI(reader);
+        Integer size = parseSize(reader);
+        Integer offset = parseOffset(reader);
 
-        return new Module(name, interfaces, registers, null);
+        return new Module(name, interfaces, registers, offset, size);
     }
 }

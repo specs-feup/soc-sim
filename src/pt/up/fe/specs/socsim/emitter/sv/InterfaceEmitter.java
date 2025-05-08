@@ -75,9 +75,7 @@ public class InterfaceEmitter implements Emitter {
                 .add("registers", registers)
                 .add("hasReg", module.interfaces().reg())
                 .add("hasObiMaster", module.interfaces().obiMaster())
-                .add("hasObiSlave", module.interfaces().obiSlave())
-                .add("dpiSend", module.dpi().send())
-                .add("dpiRecv", module.dpi().recv());
+                .add("hasObiSlave", module.interfaces().obiSlave());
 
         return template.render();
     }
