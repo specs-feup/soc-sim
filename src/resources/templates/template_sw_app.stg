@@ -1,0 +1,21 @@
+sw_app(module) ::= <<
+
+#include \<stddef.h>
+#include \<stdint.h>
+#include \<stdio.h>
+#include \<stdlib.h>
+
+#include "core_v_mini_mcu.h"
+
+#define <module.upperName>_START_ADDRESS (EXT_PERIPHERAL_START_ADDRESS + <module.offset>)
+#define <module.upperName>_SIZE <module.size>
+#define <module.upperName>_END_ADDRESS (<module.upperName>_START_ADDRESS + SPECSITF_SIZE)
+
+int main(int argc, char *argv[]) {
+  volatile static uint32_t *<module.lowerName>_cmem_ptr = (<module.upperName>_START_ADDRESS);
+  <module.lowerName>_cmem_ptr[0] = 0x01;
+
+  return EXIT_SUCCESS;
+}
+
+>>

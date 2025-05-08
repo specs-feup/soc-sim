@@ -1,4 +1,4 @@
-package pt.up.fe.specs.socsim.emitter.dpi;
+package pt.up.fe.specs.socsim.emitter.template.dpi;
 
 import pt.up.fe.specs.socsim.model.register.Register;
 

@@ -104,4 +104,14 @@ public class TestHarnessPkgEmitter implements Emitter {
 
         return this.code;
     }
+
+    @Override
+    public String emitToString() {
+        return null;
+    }
+
+    @Override
+    public void emitToFile(String filepath) {
+
+    }
 }

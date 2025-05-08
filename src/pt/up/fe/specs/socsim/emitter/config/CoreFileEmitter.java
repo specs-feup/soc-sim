@@ -62,4 +62,14 @@ public class CoreFileEmitter implements Emitter {
 
         return sb.toString();
     }
+
+    @Override
+    public String emitToString() {
+        return null;
+    }
+
+    @Override
+    public void emitToFile(String filepath) {
+
+    }
 }

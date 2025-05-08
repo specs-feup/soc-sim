@@ -1,4 +1,4 @@
-package pt.up.fe.specs.socsim.emitter.dpi;
+package pt.up.fe.specs.socsim.emitter.template;
 
 import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupString;
@@ -10,19 +10,18 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class BaseDpiEmitter implements Emitter {
+public abstract class TemplateEmitter implements Emitter {
     protected static String TEMPLATE_FILE;
     protected static String TEMPLATE_NAME;
 
     protected final Module module;
     protected final STGroup templates;
 
-    protected BaseDpiEmitter(Module module, String templateFile, String templateName) {
-        this.module = module;
-
+    protected TemplateEmitter(Module module, String templateFile, String templateName) {
         TEMPLATE_FILE = templateFile;
         TEMPLATE_NAME = templateName;
 
+        this.module = module;
         this.templates = this.load();
     }
 

@@ -1,30 +1,27 @@
-package pt.up.fe.specs.socsim.emitter.dpi.instances;
+package pt.up.fe.specs.socsim.emitter.template.dpi;
 
 import org.stringtemplate.v4.ST;
-import org.stringtemplate.v4.STGroup;
-import org.stringtemplate.v4.STGroupString;
-import pt.up.fe.specs.socsim.emitter.Emitter;
-import pt.up.fe.specs.socsim.emitter.dpi.BaseDpiEmitter;
-import pt.up.fe.specs.socsim.emitter.dpi.DpiParameterGenerator;
+import pt.up.fe.specs.socsim.emitter.template.TemplateEmitter;
 import pt.up.fe.specs.socsim.model.Module;
 import pt.up.fe.specs.socsim.model.register.Register;
 
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DpiSourceEmitter extends BaseDpiEmitter {
-    private static final String DEFAULT_TEMPLATE_FILE = "/dpi_source.stg";
-    private static final String DEFAULT_TEMPLATE_NAME = "source";
+public class DpiSourceFileEmitter extends TemplateEmitter {
+    private static final String DEFAULT_TEMPLATE_FILE = "/templates/template_dpi.stg";
+    private static final String DEFAULT_TEMPLATE_NAME = "dpi_source";
 
-    public DpiSourceEmitter(Module module) {
-        super(module, DEFAULT_TEMPLATE_FILE, DEFAULT_TEMPLATE_NAME);
-    }
+    public DpiSourceFileEmitter(Module module) { super(module, DEFAULT_TEMPLATE_FILE, DEFAULT_TEMPLATE_NAME); }
 
     @Override
     public String emit() {
+        return null;
+    }
+
+    @Override
+    public String emitToString() {
         ST template = this.templates.getInstanceOf(TEMPLATE_NAME);
         if (template == null) {
             throw new IllegalStateException("Template '" + TEMPLATE_NAME + "' not found in " + TEMPLATE_FILE);
@@ -47,5 +44,10 @@ public class DpiSourceEmitter extends BaseDpiEmitter {
                 .add("dpi", dpiParams);
 
         return template.render();
+    }
+
+    @Override
+    public void emitToFile(String filepath) {
+
     }
 }

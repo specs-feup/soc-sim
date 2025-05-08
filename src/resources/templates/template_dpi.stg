@@ -1,4 +1,27 @@
-source(module, dpi) ::= <<
+dpi_header(module, sendParams, recvParams) ::= <<
+#ifndef <module.upperName>_DPI_H
+#define <module.upperName>_DPI_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+void <module.lowerName>_comm_init();
+
+void <module.lowerName>_comm_free();
+
+void <module.lowerName>_comm_send(<sendParams>);
+
+void <module.lowerName>_comm_recv(<recvParams>);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif // <module.upperName>_DPI_H
+>>
+
+dpi_source(module, dpi) ::= <<
 #include "<module.lowerName>dpi.h"
 #include "backend/cipc_zmq.h"
 #include \<cipc.h>

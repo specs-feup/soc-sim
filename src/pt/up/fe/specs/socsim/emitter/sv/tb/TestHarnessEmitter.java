@@ -88,4 +88,14 @@ public class TestHarnessEmitter implements Emitter {
 
         return code;
     }
+
+    @Override
+    public String emitToString() {
+        return null;
+    }
+
+    @Override
+    public void emitToFile(String filepath) {
+
+    }
 }
