@@ -1,6 +1,8 @@
 package pt.up.fe.specs.socsim;
 
 import pt.up.fe.specs.socsim.emitter.template.app.SwAppEmitter;
+import pt.up.fe.specs.socsim.emitter.template.config.DpiCoreFileEmitter;
+import pt.up.fe.specs.socsim.emitter.template.config.VerilogCoreFileEmitter;
 import pt.up.fe.specs.socsim.model.Module;
 import pt.up.fe.specs.socsim.parser.ModuleParser;
 
@@ -12,7 +14,7 @@ public class Launcher {
 
         Module module = ModuleParser.parse(resource);
 
-        SwAppEmitter emitter = new SwAppEmitter(module);
+        VerilogCoreFileEmitter emitter = new VerilogCoreFileEmitter(module);
 
         System.out.println(emitter.emitToString());
     }

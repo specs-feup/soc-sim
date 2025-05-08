@@ -1,0 +1,8 @@
+vlt_config(module) ::= <<
+
+
+`verilator_config
+
+lint_off -rule UNUSED -file "*/<module.lowerName>/<module.lowerName>.sv" -match "*"
+
+>>

@@ -94,7 +94,6 @@ public class TestHarnessPkgEmitter implements Emitter {
         throw new IllegalStateException("Could not find EXT_PERIPHERALS_ADDR_RULES array in code");
     }
 
-    @Override
     public String emit() {
         this.code = this.incrementPeripheralCount(this.code);
 

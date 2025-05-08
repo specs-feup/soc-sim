@@ -9,7 +9,6 @@ public class VltFileEmitter implements Emitter {
         this.moduleName = moduleName;
     }
 
-    @Override
     public String emit() {
         StringBuilder sb = new StringBuilder();
 

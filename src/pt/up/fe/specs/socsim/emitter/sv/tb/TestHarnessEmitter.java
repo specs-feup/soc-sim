@@ -66,7 +66,6 @@ public class TestHarnessEmitter implements Emitter {
                 this.module.name(), this.module.name(), this.module.name().toUpperCase(), this.module.name().toUpperCase());
     }
 
-    @Override
     public String emit() {
         String referencePeripheral = "simple_accelerator";
         String patternString = String.format("\\s+%s\\s+#\\([\\s\\S]*?\\)\\s+%s_i\\s*\\([\\s\\S]*?\\)\\s*;",

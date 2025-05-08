@@ -1,0 +1,39 @@
+core_config_sv(module) ::= <<
+
+CAPI=2:
+
+name: "example:ip:<module.lowerName>"
+description: "core-v-mini-mcu iffifo peripheral"
+
+filesets:
+  files_rtl:
+    files:
+    - <module.lowerName>.sv
+    file_type: systemVerilogSource
+
+targets:
+  default:
+    filesets:
+    - files_rtl
+
+>>
+
+core_config_dpi(module) ::= <<
+
+CAPI=2:
+
+name: "example:ip:<module.lowerName>dpi:0.1"
+description: "UART-DPI"
+
+filesets:
+  files_rtl:
+    files:
+      - <module.lowerName>dpi.c: { file_type: cppSource }
+      - <module.lowerName>dpi.h: { file_type: cppSource, is_include_file: true }
+
+targets:
+  default:
+    filesets:
+      - files_rtl
+
+>>

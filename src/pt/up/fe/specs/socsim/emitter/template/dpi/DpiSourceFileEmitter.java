@@ -16,11 +16,6 @@ public class DpiSourceFileEmitter extends TemplateEmitter {
     public DpiSourceFileEmitter(Module module) { super(module, DEFAULT_TEMPLATE_FILE, DEFAULT_TEMPLATE_NAME); }
 
     @Override
-    public String emit() {
-        return null;
-    }
-
-    @Override
     public String emitToString() {
         ST template = this.templates.getInstanceOf(TEMPLATE_NAME);
         if (template == null) {

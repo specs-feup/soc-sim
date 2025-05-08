@@ -13,11 +13,6 @@ public class VerilogInterfaceEmitter extends TemplateEmitter {
 
     public VerilogInterfaceEmitter(Module module) { super(module, DEFAULT_TEMPLATE_FILE, DEFAULT_TEMPLATE_NAME); }
 
-    @Override
-    public String emit() {
-        return null;
-    }
-
     // TODO: review this implementation
     @Override
     public String emitToString() {

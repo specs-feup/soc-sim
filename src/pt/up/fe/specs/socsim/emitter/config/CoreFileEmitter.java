@@ -30,7 +30,6 @@ public class CoreFileEmitter implements Emitter {
         return this;
     }
 
-    @Override
     public String emit() {
         StringBuilder sb = new StringBuilder();
 
