@@ -48,12 +48,12 @@ public class ModuleParser {
         return registers;
     }
 
-    private static Integer parseOffset(JsonReader reader) {
-        return reader.getIntOrDefault("offset", 0);
+    private static String parseOffset(JsonReader reader) {
+        return reader.getStringOrDefault("offset", "0");
     }
 
-    private static Integer parseSize(JsonReader reader) {
-        return reader.getIntOrDefault("size", 0);
+    private static String parseSize(JsonReader reader) {
+        return reader.getStringOrDefault("size", "0");
     }
 
     public static Module parse(String resource) throws IOException {
@@ -62,8 +62,8 @@ public class ModuleParser {
         String name = parseName(reader);
         Interfaces interfaces = parseInterfaces(reader);
         List<Register> registers = parseRegisters(reader);
-        Integer size = parseSize(reader);
-        Integer offset = parseOffset(reader);
+        String size = parseSize(reader);
+        String offset = parseOffset(reader);
 
         return new Module(name, interfaces, registers, offset, size);
     }
