@@ -15,7 +15,7 @@ public class Launcher {
 
         Module module = ModuleParser.parse(resource);
 
-        TestHarnessPkgEmitter emitter = new TestHarnessPkgEmitter("/sv/test_harness_pkg.sv", module);
+        TestHarnessEmitter emitter = new TestHarnessEmitter("sv/test_harness.sv", module);
 
         System.out.println(emitter.emit());
     }
