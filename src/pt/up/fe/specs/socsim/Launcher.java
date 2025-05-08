@@ -16,7 +16,7 @@ public class Launcher {
 
         Module module = ModuleParser.parse(resource);
 
-        TestHarnessPkgModifier modifier = new TestHarnessPkgModifier(module, "data/test_harness_pkg.sv");
+        TestHarnessModifier modifier = new TestHarnessModifier(module, "data/test_harness.sv");
 
         System.out.println(modifier.modifyToString());
     }
