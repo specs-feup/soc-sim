@@ -56,7 +56,7 @@ public class TestHarnessPkgEmitter implements Emitter {
     }
 
     private String addPeripheralConstants(String code) {
-        String insertionPoint = "localparam addr_map_rule_t [EXT_NPERIPHERALS-1:0] EXT_PERIPHERALS_ADDR_RULES";
+        String insertionPoint = "  localparam addr_map_rule_t [EXT_NPERIPHERALS-1:0] EXT_PERIPHERALS_ADDR_RULES";
 
         String newConstants = String.format(
                 "\n  // %s Peripheral\n" +
@@ -93,7 +93,6 @@ public class TestHarnessPkgEmitter implements Emitter {
         }
         throw new IllegalStateException("Could not find EXT_PERIPHERALS_ADDR_RULES array in code");
     }
-
 
     @Override
     public String emit() {
