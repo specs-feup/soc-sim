@@ -1,6 +1,5 @@
 package pt.up.fe.specs.socsim.modifier;
 
-import pt.up.fe.specs.socsim.emitter.Modifier;
 import pt.up.fe.specs.socsim.model.Module;
 
 import java.io.IOException;

@@ -4,6 +4,7 @@ import pt.up.fe.specs.socsim.emitter.template.app.SwAppEmitter;
 import pt.up.fe.specs.socsim.emitter.template.config.DpiCoreFileEmitter;
 import pt.up.fe.specs.socsim.emitter.template.config.VerilogCoreFileEmitter;
 import pt.up.fe.specs.socsim.model.Module;
+import pt.up.fe.specs.socsim.modifier.core.CoreFileModifier;
 import pt.up.fe.specs.socsim.modifier.verilog.TestHarnessModifier;
 import pt.up.fe.specs.socsim.modifier.verilog.TestHarnessPkgModifier;
 import pt.up.fe.specs.socsim.parser.ModuleParser;
@@ -16,7 +17,7 @@ public class Launcher {
 
         Module module = ModuleParser.parse(resource);
 
-        TestHarnessModifier modifier = new TestHarnessModifier(module, "data/test_harness.sv");
+        CoreFileModifier modifier = new CoreFileModifier(module, "data/x-heep-tb-utils.core");
 
         System.out.println(modifier.modifyToString());
     }

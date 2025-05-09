@@ -1,4 +1,4 @@
-package pt.up.fe.specs.socsim.emitter;
+package pt.up.fe.specs.socsim.modifier;
 
 public interface Modifier {
     String modifyToString();

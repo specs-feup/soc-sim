@@ -1,6 +1,5 @@
 package pt.up.fe.specs.socsim.modifier.verilog;
 
-import pt.up.fe.specs.socsim.emitter.Modifier;
 import pt.up.fe.specs.socsim.model.Module;
 import pt.up.fe.specs.socsim.modifier.BaseModifier;
 
