@@ -1,12 +1,9 @@
 package pt.up.fe.specs.socsim;
 
-import pt.up.fe.specs.socsim.emitter.template.app.SwAppEmitter;
-import pt.up.fe.specs.socsim.emitter.template.config.DpiCoreFileEmitter;
-import pt.up.fe.specs.socsim.emitter.template.config.VerilogCoreFileEmitter;
+import pt.up.fe.specs.socsim.emitter.template.config.ConfigFileEmitter;
+import pt.up.fe.specs.socsim.emitter.template.config.ConfigFileType;
 import pt.up.fe.specs.socsim.model.Module;
 import pt.up.fe.specs.socsim.modifier.core.CoreFileModifier;
-import pt.up.fe.specs.socsim.modifier.verilog.TestHarnessModifier;
-import pt.up.fe.specs.socsim.modifier.verilog.TestHarnessPkgModifier;
 import pt.up.fe.specs.socsim.parser.ModuleParser;
 
 import java.io.IOException;
@@ -17,8 +14,8 @@ public class Launcher {
 
         Module module = ModuleParser.parse(resource);
 
-        CoreFileModifier modifier = new CoreFileModifier(module, "data/x-heep-tb-utils.core");
+        ConfigFileEmitter emitter = new ConfigFileEmitter(module, ConfigFileType.VERILOG);
 
-        System.out.println(modifier.modifyToString());
+        System.out.println(emitter.emitToString());
     }
 }

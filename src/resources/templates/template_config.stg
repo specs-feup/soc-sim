@@ -1,4 +1,4 @@
-core_config_sv(module) ::= <<
+config_verilog(module) ::= <<
 
 CAPI=2:
 
@@ -18,7 +18,7 @@ targets:
 
 >>
 
-core_config_dpi(module) ::= <<
+config_dpi(module) ::= <<
 
 CAPI=2:
 
@@ -35,5 +35,14 @@ targets:
   default:
     filesets:
       - files_rtl
+
+>>
+
+config_vlt(module) ::= <<
+
+
+`verilator_config
+
+lint_off -rule UNUSED -file "*/<module.lowerName>/<module.lowerName>.sv" -match "*"
 
 >>
