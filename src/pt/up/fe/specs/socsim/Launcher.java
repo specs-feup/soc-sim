@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class Launcher {
     public static void main(String[] args) throws IOException {
-        String resource = "/config/config.json";
+        String resource = "config/config.json";
 
         Module module = ConfigParser.parse(resource);
 

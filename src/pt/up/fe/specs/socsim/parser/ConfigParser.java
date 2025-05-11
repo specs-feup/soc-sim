@@ -55,8 +55,8 @@ public class ConfigParser {
         return reader.getStringOrDefault("size", "0");
     }
 
-    public static Module parse(String resource) throws IOException {
-        JsonReader reader = new JsonReader(resource).getObject("module").orElseThrow();
+    public static Module parse(String path) throws IOException {
+        JsonReader reader = new JsonReader(path).getObject("module").orElseThrow();
 
         String name = parseName(reader);
         Interfaces interfaces = parseInterfaces(reader);

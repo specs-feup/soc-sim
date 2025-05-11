@@ -3,6 +3,7 @@ package pt.up.fe.specs.socsim.reader;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
+import pt.up.fe.specs.socsim.utils.FileUtils;
 
 import java.io.*;
 import java.net.URL;
@@ -13,24 +14,8 @@ public class JsonReader {
     private final JsonNode root;
     private static final ObjectMapper mapper = new ObjectMapper();
 
-    public JsonReader(String resourcePath) throws IOException {
-        this(JsonReader.class.getResourceAsStream(resourcePath));
-    }
-
-    public JsonReader(File file) throws IOException {
-        this(new FileInputStream(file));
-    }
-
-    public JsonReader(InputStream stream) throws IOException {
-        this(mapper.readTree(stream));
-    }
-
-    public JsonReader(URL url) throws IOException {
-        this(mapper.readTree(url));
-    }
-
-    public JsonReader(String rawJson, boolean isRawJson) throws IOException {
-        this(mapper.readTree(rawJson));
+    public JsonReader(String filepath) throws IOException {
+        this(mapper.readTree(FileUtils.read(filepath)));
     }
 
     public JsonReader(JsonNode root) {
