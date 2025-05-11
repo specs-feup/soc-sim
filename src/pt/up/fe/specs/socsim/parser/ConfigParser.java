@@ -1,7 +1,6 @@
 package pt.up.fe.specs.socsim.parser;
 
 import pt.up.fe.specs.socsim.model.Module;
-import pt.up.fe.specs.socsim.model.dpi.DPI;
 import pt.up.fe.specs.socsim.model.interfaces.Interfaces;
 import pt.up.fe.specs.socsim.model.register.Register;
 import pt.up.fe.specs.socsim.model.register.RegisterType;
@@ -11,7 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ModuleParser {
+public class ConfigParser {
 
     private static String parseName(JsonReader reader) {
         return reader.getStringOrDefault("name", "unknown");
