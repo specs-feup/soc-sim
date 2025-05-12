@@ -6,6 +6,7 @@ import pt.up.fe.specs.socsim.emitter.template.config.ConfigFileType;
 import pt.up.fe.specs.socsim.emitter.template.dpi.DpiHeaderFileEmitter;
 import pt.up.fe.specs.socsim.emitter.template.dpi.DpiSourceFileEmitter;
 import pt.up.fe.specs.socsim.emitter.template.verilog.VerilogInterfaceEmitter;
+import pt.up.fe.specs.socsim.generator.Generator;
 import pt.up.fe.specs.socsim.model.Module;
 import pt.up.fe.specs.socsim.parser.ConfigParser;
 import pt.up.fe.specs.socsim.parser.ConfigValidator;
@@ -15,19 +16,9 @@ import java.util.List;
 
 public class Launcher {
     public static void main(String[] args) throws IOException {
-        String path = "config/config.json";
+        String config = "config/config.json";
 
-        List<String> errors = ConfigValidator.validate(path);
-        if (!errors.isEmpty()) {
-            errors.forEach(System.err::println);
-
-            return;
-        }
-
-        Module module = ConfigParser.parse(path);
-
-        SwAppEmitter emitter = new SwAppEmitter(module);
-
-        System.out.println(emitter.emitToString());
+        Generator generator = new Generator(config);
+        generator.undo();
     }
 }

@@ -7,8 +7,11 @@ import pt.up.fe.specs.socsim.emitter.Emitter;
 import pt.up.fe.specs.socsim.model.Module;
 import pt.up.fe.specs.socsim.model.ModuleTemplateData;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public abstract class TemplateEmitter implements Emitter {
     private final Module module;
@@ -52,6 +55,13 @@ public abstract class TemplateEmitter implements Emitter {
 
     @Override
     public void emitToFile(String filepath) {
-        throw new UnsupportedOperationException("emitToFile not implemented");
+        try {
+            Path file = Path.of(filepath);
+
+            Files.createDirectories(file.getParent());
+            Files.writeString(file, this.emitToString(), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to write to file: " + filepath, e);
+        }
     }
 }

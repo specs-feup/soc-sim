@@ -1,7 +1,7 @@
 {
-  "path_to_soc": "",
+  "path_to_soc": "/home/pedro-ramalho/x-heep",
   "module": {
-    "name": "specsitf",
+    "name": "generated_itf",
     "offset": "5000",
     "size": "100",
     "interfaces": {
