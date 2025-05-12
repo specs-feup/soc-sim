@@ -3,6 +3,7 @@ package pt.up.fe.specs.socsim.emitter.template.dpi;
 import org.stringtemplate.v4.ST;
 import pt.up.fe.specs.socsim.emitter.template.TemplateEmitter;
 import pt.up.fe.specs.socsim.model.Module;
+import pt.up.fe.specs.socsim.model.ModuleTemplateData;
 import pt.up.fe.specs.socsim.model.register.Register;
 
 import java.util.HashMap;
@@ -21,21 +22,7 @@ public class DpiSourceFileEmitter extends TemplateEmitter {
         if (template == null)
             throw new IllegalStateException("Template '" + TEMPLATE_NAME + "' not found in " + TEMPLATE_FILE);
 
-        List<Register> registers = module.registers();
-        int regCount = registers.size();
-
-        Map<String, Object> dpiParams = new HashMap<>();
-        dpiParams.put("sendParams", DpiParameterGenerator.generateSendParams(registers));
-        dpiParams.put("recvParams", DpiParameterGenerator.generateRecvParams(registers));
-        dpiParams.put("sendFormat", DpiParameterGenerator.generateFormatString(regCount));
-        dpiParams.put("recvFormat", DpiParameterGenerator.generateFormatString(regCount));
-        dpiParams.put("sendArgs", DpiParameterGenerator.generateSendArgs(registers));
-        dpiParams.put("recvArgs", DpiParameterGenerator.generateRegNameList(registers));
-        dpiParams.put("recvZeroInit", DpiParameterGenerator.generateRecvZeroInit(registers));
-        dpiParams.put("numRegs", regCount);
-
-        template.add("module", getModuleData())
-                .add("dpi", dpiParams);
+        template.add("module", new ModuleTemplateData(this.module));
 
         return template.render();
     }

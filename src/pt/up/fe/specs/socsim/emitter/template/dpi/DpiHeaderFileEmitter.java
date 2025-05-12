@@ -3,6 +3,7 @@ package pt.up.fe.specs.socsim.emitter.template.dpi;
 import org.stringtemplate.v4.ST;
 import pt.up.fe.specs.socsim.emitter.template.TemplateEmitter;
 import pt.up.fe.specs.socsim.model.Module;
+import pt.up.fe.specs.socsim.model.ModuleTemplateData;
 
 public class DpiHeaderFileEmitter extends TemplateEmitter {
     private static final String DEFAULT_TEMPLATE_FILE = "/templates/template_dpi.stg";
@@ -16,9 +17,7 @@ public class DpiHeaderFileEmitter extends TemplateEmitter {
         if (template == null)
             throw new IllegalStateException("Template '" + TEMPLATE_NAME + "' not found in " + TEMPLATE_FILE);
 
-        template.add("module", getModuleData());
-        template.add("sendParams", DpiParameterGenerator.generateSendParams(module.registers()))
-                .add("recvParams", DpiParameterGenerator.generateRecvParams(module.registers()));
+        template.add("module", new ModuleTemplateData(this.module));
 
         return template.render();
     }

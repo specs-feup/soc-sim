@@ -25,7 +25,7 @@ public class Launcher {
 
         Module module = ConfigParser.parse(path);
 
-        DpiSourceFileEmitter emitter = new DpiSourceFileEmitter(module);
+        VerilogInterfaceEmitter emitter = new VerilogInterfaceEmitter(module);
 
         System.out.println(emitter.emitToString());
     }

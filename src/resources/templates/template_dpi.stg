@@ -1,4 +1,4 @@
-dpi_header(module, sendParams, recvParams) ::= <<
+dpi_header(module) ::= <<
 #ifndef <module.upperName>_DPI_H
 #define <module.upperName>_DPI_H
 
@@ -10,9 +10,9 @@ void <module.lowerName>_comm_init();
 
 void <module.lowerName>_comm_free();
 
-void <module.lowerName>_comm_send(<sendParams>);
+void <module.lowerName>_comm_send(<module.dpiSendSignature>);
 
-void <module.lowerName>_comm_recv(<recvParams>);
+void <module.lowerName>_comm_recv(<module.dpiRecvPointerParams>);
 
 #ifdef __cplusplus
 }
@@ -21,7 +21,7 @@ void <module.lowerName>_comm_recv(<recvParams>);
 #endif // <module.upperName>_DPI_H
 >>
 
-dpi_source(module, dpi) ::= <<
+dpi_source(module) ::= <<
 #include "<module.lowerName>dpi.h"
 #include "backend/cipc_zmq.h"
 #include \<cipc.h>
@@ -71,25 +71,25 @@ void <module.lowerName>_comm_free() {
   }
 }
 
-void <module.lowerName>_comm_send(<dpi.sendParams>) {
+void <module.lowerName>_comm_send(<module.dpiSendSignature>) {
   char buffer[<module.upperName>_BUFFER_SIZE] = {0};
 
-  size_t length = snprintf(buffer, sizeof(buffer), "<dpi.sendFormat>", <dpi.sendArgs>);
+  size_t length = snprintf(buffer, sizeof(buffer), "<module.dpiSendFormat>", <module.dpiSendCallArgs>);
 
   if ((*<module.lowerName>_server)->send((*<module.lowerName>_server)->context, buffer, length) != CIPC_OK) {
     printf("Failed to send reply!\\n");
   } else {
-    printf("Sent: <dpi.sendPrint>\\n", <dpi.sendArgs>);
+    printf("Sent: <module.dpiSendFormat>\\n", <module.dpiSendCallArgs>);
   }
 }
 
-void <module.lowerName>_comm_recv(<dpi.recvParams>) {
+void <module.lowerName>_comm_recv(<module.dpiRecvPointerParams>) {
   char buffer[<module.upperName>_BUFFER_SIZE] = { 0 };
 
   if ((*<module.lowerName>_server)->recv((*<module.lowerName>_server)->context, buffer, sizeof(buffer)) != CIPC_OK)
     printf("Failed to receive message!\\n");
 
-  if (sscanf(buffer, "<dpi.recvFormat>", <dpi.recvArgs>) != <dpi.numRegs>)
+  if (sscanf(buffer, "<module.dpiRecvFormat>", <module.dpiRecvCallArgs>) != <module.registerCount>)
     printf("Failed to parse received data!\\n");
 }
 >>
