@@ -3,6 +3,7 @@ package pt.up.fe.specs.socsim.emitter.template;
 import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupString;
 import pt.up.fe.specs.socsim.emitter.Emitter;
+import pt.up.fe.specs.socsim.emitter.template.dpi.DpiParameterGenerator;
 import pt.up.fe.specs.socsim.model.Module;
 
 import java.io.InputStream;
@@ -41,11 +42,14 @@ public abstract class TemplateEmitter implements Emitter {
         }
     }
 
-    protected Map<String, String> getModuleNameVariants() {
+    protected Map<String, String> getModuleData() {
         Map<String, String> variants = new HashMap<>();
         variants.put("name", module.name());
         variants.put("lowerName", module.name().toLowerCase());
         variants.put("upperName", module.name().toUpperCase());
+        variants.put("regNameList", DpiParameterGenerator.generateRegNameList(module.registers()));
+        variants.put("dpiSendArgs", DpiParameterGenerator.generateDpiSendArgs(module.registers()));
+        variants.put("dpiRecvArgs", DpiParameterGenerator.generateDpiRecvArgs(module.registers()));
 
         return variants;
     }

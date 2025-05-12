@@ -35,7 +35,7 @@ public class DpiSourceFileEmitter extends TemplateEmitter {
         dpiParams.put("recvZeroInit", DpiParameterGenerator.generateRecvZeroInit(registers));
         dpiParams.put("numRegs", regCount);
 
-        template.add("module", getModuleNameVariants())
+        template.add("module", getModuleData())
                 .add("dpi", dpiParams);
 
         return template.render();

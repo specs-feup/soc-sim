@@ -16,7 +16,7 @@ public class SwAppEmitter extends TemplateEmitter {
         if (template == null)
             throw new IllegalStateException("Template '" + TEMPLATE_NAME + "' not found in " + TEMPLATE_FILE);
 
-        var variants = getModuleNameVariants();
+        var variants = getModuleData();
         variants.put("offset", this.module.offset());
         variants.put("size", this.module.size());
 

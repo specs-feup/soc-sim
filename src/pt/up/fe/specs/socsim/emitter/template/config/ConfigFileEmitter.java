@@ -20,7 +20,7 @@ public class ConfigFileEmitter extends TemplateEmitter {
         if (template == null)
             throw new IllegalStateException("Template '" + templateName + "' not found in " + TEMPLATE_FILE);
 
-        template.add("module", getModuleNameVariants());
+        template.add("module", getModuleData());
 
         return template.render();
     }

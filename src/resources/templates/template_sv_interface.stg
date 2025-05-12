@@ -1,6 +1,4 @@
-group module;
-
-interface(module, registers, hasReg, hasObiMaster, hasObiSlave, dpiSend, dpiRecv) ::= <<
+sv_interface(module, registers, hasReg, hasObiMaster, hasObiSlave, dpiSend, dpiRecv) ::= <<
 module <module.lowerName> #(
     parameter type reg_req_t  = logic,
     parameter type reg_rsp_t  = logic,
@@ -28,12 +26,8 @@ module <module.lowerName> #(
 
   import "DPI-C" function void <module.lowerName>_comm_init();
   import "DPI-C" function void <module.lowerName>_comm_free();
-  <if(dpiSend)>
-  import "DPI-C" function void <module.lowerName>_comm_send();
-  <endif>
-  <if(dpiRecv)>
-  import "DPI-C" function int <module.lowerName>_comm_recv();
-  <endif>
+  import "DPI-C" function void <module.lowerName>_comm_send(<module.dpiSendArgs>);
+  import "DPI-C" function void <module.lowerName>_comm_recv(<module.dpiRecvArgs>);
 
   initial begin
     <module.lowerName>_comm_init();
@@ -45,27 +39,19 @@ module <module.lowerName> #(
     <module.lowerName>_comm_free();
   end
 
-  <if(dpiSend)>
   always_ff @(posedge clk_i or negedge rst_ni) begin
     if (!rst_ni) begin
     end else begin
-      <dpiSend:{ s | <module.lowerName>_comm_send(<s>);
-      }>
+      <module.lowerName>_comm_send(<module.regNameList>);
     end
   end
-  <endif>
 
-  <if(dpiRecv)>
   always_ff @(posedge clk_i or negedge rst_ni) begin
     if (!rst_ni) begin
-      <dpiRecv:{ s | <s> \<= 32'b0;
-      }>
     end else begin
-      <dpiRecv:{ s | <s> \<= <module.lowerName>_comm_recv();
-      }>
+      <module.lowerName>_comm_send(<module.regNameList>);
     end
   end
-  <endif>
 
 endmodule
 >>

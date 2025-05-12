@@ -3,7 +3,8 @@ package pt.up.fe.specs.socsim.parser;
 import pt.up.fe.specs.socsim.model.Module;
 import pt.up.fe.specs.socsim.model.interfaces.Interfaces;
 import pt.up.fe.specs.socsim.model.register.Register;
-import pt.up.fe.specs.socsim.model.register.RegisterType;
+import pt.up.fe.specs.socsim.model.register.RegisterDpiType;
+import pt.up.fe.specs.socsim.model.register.RegisterVerilogType;
 import pt.up.fe.specs.socsim.reader.JsonReader;
 
 import java.io.IOException;
@@ -28,11 +29,12 @@ public class ConfigParser {
 
     private static Register parseRegister(JsonReader reader) {
         String name = reader.getStringOrDefault("name", "unknown");
-        RegisterType type = RegisterType.fromString(reader.getStringOrDefault("type", "unknown"));
+        RegisterVerilogType verilogType = RegisterVerilogType.fromString(reader.getStringOrDefault("verilog_type", "unknown"));
+        RegisterDpiType dpiType = RegisterDpiType.fromString(reader.getStringOrDefault("dpi_type", "unknown"));
         Integer width = reader.getIntOrDefault("width", -1);
         Integer initial = reader.getIntOrDefault("initial", 0);
 
-        return new Register(name, type, width, initial);
+        return new Register(name, verilogType, dpiType, width, initial);
     }
 
     private static List<Register> parseRegisters(JsonReader reader) {

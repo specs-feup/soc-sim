@@ -11,6 +11,24 @@ public class DpiParameterGenerator {
         return generateParams(registers, "int ", "");
     }
 
+    public static String generateRegNameList(List<Register> registers) {
+        return registers.stream()
+                .map(Register::name)
+                .collect(Collectors.joining(", "));
+    }
+
+    public static String generateDpiSendArgs(List<Register> registers) {
+        return registers.stream()
+                .map(reg -> reg.dpiType().getType() + " " + reg.name())
+                .collect(Collectors.joining(", "));
+    }
+
+    public static String generateDpiRecvArgs(List<Register> registers) {
+        return registers.stream()
+                .map(reg -> "output " + reg.dpiType().getType() + " " + reg.name())
+                .collect(Collectors.joining(", "));
+    }
+
     public static String generateRecvParams(List<Register> registers) {
         return generateParams(registers, "int *", "");
     }
@@ -20,7 +38,7 @@ public class DpiParameterGenerator {
     }
 
     public static String generateRecvArgs(List<Register> registers) {
-        return generateParams(registers, "", "");
+        return generateParams(registers, "output int ", "");
     }
 
     public static String generateRecvZeroInit(List<Register> registers) {

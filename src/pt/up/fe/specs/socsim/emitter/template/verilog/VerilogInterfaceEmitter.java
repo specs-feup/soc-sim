@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class VerilogInterfaceEmitter extends TemplateEmitter {
     private static final String DEFAULT_TEMPLATE_FILE = "/templates/template_sv_interface.stg";
-    private static final String DEFAULT_TEMPLATE_NAME = "interface";
+    private static final String DEFAULT_TEMPLATE_NAME = "sv_interface";
 
     public VerilogInterfaceEmitter(Module module) { super(module, DEFAULT_TEMPLATE_FILE, DEFAULT_TEMPLATE_NAME); }
 
@@ -24,7 +24,7 @@ public class VerilogInterfaceEmitter extends TemplateEmitter {
         Map[] registers = module.registers().stream()
                 .map(reg -> {
                     Map<String, Object> data = new HashMap<>();
-                    data.put("type", reg.type().getType().equals("logic") ? "logic" : "bit");
+                    data.put("type", reg.verilogType().getType());
                     data.put("widthMinusOne", reg.width() - 1);
                     data.put("name", reg.name());
                     data.put("initial", reg.initial().toString());
@@ -32,7 +32,7 @@ public class VerilogInterfaceEmitter extends TemplateEmitter {
                 })
                 .toArray(Map[]::new);
 
-        template.add("module", getModuleNameVariants())
+        template.add("module", getModuleData())
                 .add("registers", registers)
                 .add("hasReg", module.interfaces().reg())
                 .add("hasObiMaster", module.interfaces().obiMaster())

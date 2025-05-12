@@ -1,12 +1,14 @@
 package pt.up.fe.specs.socsim.model.register;
 
-public enum RegisterType {
-    LOGIC("logic"),
-    BIT("bit");
+public enum RegisterDpiType {
+    BYTE("byte"),
+    SHORT("short"),
+    INT("int"),
+    LONG("long");
 
     private String type;
 
-    RegisterType(String type) {
+    RegisterDpiType(String type) {
         this.type = type;
     }
 
@@ -14,8 +16,8 @@ public enum RegisterType {
         return this.type;
     }
 
-    public static RegisterType fromString(String typeString) {
-        for (RegisterType v : RegisterType.values())
+    public static RegisterDpiType fromString(String typeString) {
+        for (RegisterDpiType v : RegisterDpiType.values())
             if (v.type.equals(typeString))
                 return v;
 

@@ -16,7 +16,7 @@ public class DpiHeaderFileEmitter extends TemplateEmitter {
         if (template == null)
             throw new IllegalStateException("Template '" + TEMPLATE_NAME + "' not found in " + TEMPLATE_FILE);
 
-        template.add("module", getModuleNameVariants());
+        template.add("module", getModuleData());
         template.add("sendParams", DpiParameterGenerator.generateSendParams(module.registers()))
                 .add("recvParams", DpiParameterGenerator.generateRecvParams(module.registers()));
 

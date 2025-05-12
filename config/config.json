@@ -9,8 +9,8 @@
       "obi_slave": false
     },
     "registers": [
-      { "name": "int_reg_1", "type": "logic", "interpreted_as": "int", "width": 32, "initial": 0 },
-      { "name":  "int_reg_2", "type": "logic", "interpreted_as": "int", "width": 32, "initial": 0 }
+      { "name": "int_reg_1", "verilog_type": "logic", "dpi_type": "int", "width": 32, "initial": 0 },
+      { "name":  "int_reg_2", "verilog_type": "logic", "dpi_type": "int", "width": 32, "initial": 0 }
     ]
   }
 }
