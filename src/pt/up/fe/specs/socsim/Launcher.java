@@ -7,14 +7,23 @@ import pt.up.fe.specs.socsim.emitter.template.dpi.DpiSourceFileEmitter;
 import pt.up.fe.specs.socsim.emitter.template.verilog.VerilogInterfaceEmitter;
 import pt.up.fe.specs.socsim.model.Module;
 import pt.up.fe.specs.socsim.parser.ConfigParser;
+import pt.up.fe.specs.socsim.parser.ConfigValidator;
 
 import java.io.IOException;
+import java.util.List;
 
 public class Launcher {
     public static void main(String[] args) throws IOException {
-        String resource = "config/config.json";
+        String path = "config/config.json";
 
-        Module module = ConfigParser.parse(resource);
+        List<String> errors = ConfigValidator.validate(path);
+        if (!errors.isEmpty()) {
+            errors.forEach(System.err::println);
+
+            return;
+        }
+
+        Module module = ConfigParser.parse(path);
 
         DpiSourceFileEmitter emitter = new DpiSourceFileEmitter(module);
 

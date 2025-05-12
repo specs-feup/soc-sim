@@ -18,9 +18,8 @@ public class DpiSourceFileEmitter extends TemplateEmitter {
     @Override
     public String emitToString() {
         ST template = this.templates.getInstanceOf(TEMPLATE_NAME);
-        if (template == null) {
+        if (template == null)
             throw new IllegalStateException("Template '" + TEMPLATE_NAME + "' not found in " + TEMPLATE_FILE);
-        }
 
         List<Register> registers = module.registers();
         int regCount = registers.size();

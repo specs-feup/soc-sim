@@ -54,7 +54,6 @@ public abstract class TemplateEmitter implements Emitter {
         data.put("dpiSendArgs", DpiParameterGenerator.generateDpiSendArgs(module.registers()));
         data.put("dpiRecvArgs", DpiParameterGenerator.generateDpiRecvArgs(module.registers()));
 
-
         return data;
     }
 }
