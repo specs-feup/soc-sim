@@ -40,29 +40,30 @@ void <module.lowerName>_comm_init() {
   if (!<module.lowerName>_server) {
     printf("Failed to allocate memory for server!\\n");
 
-    exit(1);
+    exit(EXIT_FAILURE);
   }
 
   *<module.lowerName>_server = cipc_create(CIPC_PROTOCOL_ZMQ);
   if (!(*<module.lowerName>_server)) {
     printf("Failed to create server!\\n");
 
-    exit(1);
+    exit(EXIT_FAILURE);
   }
 
   cipc_zmq_config *config = cipc_zmq_config_rep(<module.upperName>_ADDRESS);
   if ((*<module.lowerName>_server)->init(&(*<module.lowerName>_server)->context, config) != CIPC_OK) {
     printf("Failed to initialize server!\\n");
+
     <module.lowerName>_comm_free();
-    exit(1);
+
+    exit(EXIT_FAILURE);
   }
 }
 
 void <module.lowerName>_comm_free() {
   if (<module.lowerName>_server) {
-    if (*<module.lowerName>_server) {
+    if (*<module.lowerName>_server)
       cipc_free(*<module.lowerName>_server);
-    }
 
     free(<module.lowerName>_server);
 
@@ -72,6 +73,7 @@ void <module.lowerName>_comm_free() {
 
 void <module.lowerName>_comm_send(<dpi.sendParams>) {
   char buffer[<module.upperName>_BUFFER_SIZE] = {0};
+
   size_t length = snprintf(buffer, sizeof(buffer), "<dpi.sendFormat>", <dpi.sendArgs>);
 
   if ((*<module.lowerName>_server)->send((*<module.lowerName>_server)->context, buffer, length) != CIPC_OK) {
@@ -82,14 +84,12 @@ void <module.lowerName>_comm_send(<dpi.sendParams>) {
 }
 
 void <module.lowerName>_comm_recv(<dpi.recvParams>) {
-  char buffer[<module.upperName>_BUFFER_SIZE] = {0};
+  char buffer[<module.upperName>_BUFFER_SIZE] = { 0 };
 
-  if ((*<module.lowerName>_server)->recv((*<module.lowerName>_server)->context, buffer, sizeof(buffer)) != CIPC_OK) {
+  if ((*<module.lowerName>_server)->recv((*<module.lowerName>_server)->context, buffer, sizeof(buffer)) != CIPC_OK)
     printf("Failed to receive message!\\n");
-  }
 
-  if (sscanf(buffer, "<dpi.recvFormat>", <dpi.recvArgs>) != <dpi.numRegs>) {
+  if (sscanf(buffer, "<dpi.recvFormat>", <dpi.recvArgs>) != <dpi.numRegs>)
     printf("Failed to parse received data!\\n");
-  }
 }
 >>

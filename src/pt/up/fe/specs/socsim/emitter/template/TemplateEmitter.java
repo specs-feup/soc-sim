@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public abstract class TemplateEmitter implements Emitter {
     protected static String TEMPLATE_FILE;
@@ -43,14 +44,17 @@ public abstract class TemplateEmitter implements Emitter {
     }
 
     protected Map<String, String> getModuleData() {
-        Map<String, String> variants = new HashMap<>();
-        variants.put("name", module.name());
-        variants.put("lowerName", module.name().toLowerCase());
-        variants.put("upperName", module.name().toUpperCase());
-        variants.put("regNameList", DpiParameterGenerator.generateRegNameList(module.registers()));
-        variants.put("dpiSendArgs", DpiParameterGenerator.generateDpiSendArgs(module.registers()));
-        variants.put("dpiRecvArgs", DpiParameterGenerator.generateDpiRecvArgs(module.registers()));
+        Map<String, String> data = new HashMap<>();
 
-        return variants;
+        data.put("name", module.name());
+        data.put("lowerName", module.name().toLowerCase());
+        data.put("upperName", module.name().toUpperCase());
+
+        data.put("regNameList", DpiParameterGenerator.generateRegNameList(module.registers()));
+        data.put("dpiSendArgs", DpiParameterGenerator.generateDpiSendArgs(module.registers()));
+        data.put("dpiRecvArgs", DpiParameterGenerator.generateDpiRecvArgs(module.registers()));
+
+
+        return data;
     }
 }

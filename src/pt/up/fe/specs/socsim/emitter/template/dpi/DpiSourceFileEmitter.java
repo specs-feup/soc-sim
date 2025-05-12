@@ -31,7 +31,7 @@ public class DpiSourceFileEmitter extends TemplateEmitter {
         dpiParams.put("sendFormat", DpiParameterGenerator.generateFormatString(regCount));
         dpiParams.put("recvFormat", DpiParameterGenerator.generateFormatString(regCount));
         dpiParams.put("sendArgs", DpiParameterGenerator.generateSendArgs(registers));
-        dpiParams.put("recvArgs", DpiParameterGenerator.generateRecvArgs(registers));
+        dpiParams.put("recvArgs", DpiParameterGenerator.generateRegNameList(registers));
         dpiParams.put("recvZeroInit", DpiParameterGenerator.generateRecvZeroInit(registers));
         dpiParams.put("numRegs", regCount);
 
