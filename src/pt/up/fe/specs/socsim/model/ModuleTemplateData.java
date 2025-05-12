@@ -12,6 +12,9 @@ public class ModuleTemplateData {
     public final String lowerName;
     public final String upperName;
 
+    public final String size;
+    public final String offset;
+
     public final boolean hasReg;
     public final boolean hasObiMaster;
     public final boolean hasObiSlave;
@@ -32,6 +35,8 @@ public class ModuleTemplateData {
         this.name = module.name();
         this.lowerName = module.name().toLowerCase();
         this.upperName = module.name().toUpperCase();
+        this.size = module.size();
+        this.offset = module.offset();
 
         this.hasReg = module.interfaces().reg();
         this.hasObiMaster = module.interfaces().obiMaster();

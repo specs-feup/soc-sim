@@ -1,5 +1,6 @@
 package pt.up.fe.specs.socsim;
 
+import pt.up.fe.specs.socsim.emitter.template.app.SwAppEmitter;
 import pt.up.fe.specs.socsim.emitter.template.config.ConfigFileEmitter;
 import pt.up.fe.specs.socsim.emitter.template.config.ConfigFileType;
 import pt.up.fe.specs.socsim.emitter.template.dpi.DpiHeaderFileEmitter;
@@ -25,7 +26,7 @@ public class Launcher {
 
         Module module = ConfigParser.parse(path);
 
-        VerilogInterfaceEmitter emitter = new VerilogInterfaceEmitter(module);
+        SwAppEmitter emitter = new SwAppEmitter(module);
 
         System.out.println(emitter.emitToString());
     }

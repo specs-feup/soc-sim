@@ -1,37 +1,33 @@
 package pt.up.fe.specs.socsim.emitter.template;
 
+import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupString;
 import pt.up.fe.specs.socsim.emitter.Emitter;
-import pt.up.fe.specs.socsim.emitter.template.dpi.DpiParameterGenerator;
 import pt.up.fe.specs.socsim.model.Module;
+import pt.up.fe.specs.socsim.model.ModuleTemplateData;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public abstract class TemplateEmitter implements Emitter {
-    protected static String TEMPLATE_FILE;
-    protected static String TEMPLATE_NAME;
+    private final Module module;
+    private final STGroup templates;
+    private final String templateFile;
 
-    protected final Module module;
-    protected final STGroup templates;
-
-    protected TemplateEmitter(Module module, String templateFile, String templateName) {
-        TEMPLATE_FILE = templateFile;
-        TEMPLATE_NAME = templateName;
-
+    protected TemplateEmitter(Module module, String templateFile) {
         this.module = module;
-        this.templates = this.load();
+        this.templateFile = templateFile;
+        this.templates = load();
     }
+
+    protected abstract String getTemplateName();
 
     protected STGroup load() {
         try {
-            InputStream in = getClass().getResourceAsStream(TEMPLATE_FILE);
+            InputStream in = getClass().getResourceAsStream(this.templateFile);
             if (in == null) {
-                throw new IllegalStateException("Template file not found: " + TEMPLATE_FILE);
+                throw new IllegalStateException("Template file not found: " + this.templateFile);
             }
 
             STGroup group = new STGroupString(new String(in.readAllBytes(), StandardCharsets.UTF_8));
@@ -39,21 +35,23 @@ public abstract class TemplateEmitter implements Emitter {
 
             return group;
         } catch (Exception e) {
-            throw new IllegalStateException("Failed to load templates from " + TEMPLATE_FILE, e);
+            throw new IllegalStateException("Failed to load templates from " + this.templateFile, e);
         }
     }
 
-    protected Map<String, String> getModuleData() {
-        Map<String, String> data = new HashMap<>();
+    @Override
+    public String emitToString() {
+        ST template = templates.getInstanceOf(getTemplateName());
+        if (template == null)
+            throw new IllegalStateException("Template '" + getTemplateName() + "' not found in " + templateFile);
 
-        data.put("name", module.name());
-        data.put("lowerName", module.name().toLowerCase());
-        data.put("upperName", module.name().toUpperCase());
+        template.add("module", new ModuleTemplateData(this.module));
 
-        data.put("regNameList", DpiParameterGenerator.generateRegNameList(module.registers()));
-        data.put("dpiSendArgs", DpiParameterGenerator.generateDpiSendArgs(module.registers()));
-        data.put("dpiRecvArgs", DpiParameterGenerator.generateDpiRecvArgs(module.registers()));
+        return template.render();
+    }
 
-        return data;
+    @Override
+    public void emitToFile(String filepath) {
+        throw new UnsupportedOperationException("emitToFile not implemented");
     }
 }
