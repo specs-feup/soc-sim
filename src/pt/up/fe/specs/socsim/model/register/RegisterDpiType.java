@@ -6,7 +6,7 @@ public enum RegisterDpiType {
     INT("int"),
     LONG("long");
 
-    private String type;
+    private final String type;
 
     RegisterDpiType(String type) {
         this.type = type;
@@ -20,6 +20,7 @@ public enum RegisterDpiType {
         for (RegisterDpiType v : RegisterDpiType.values())
             if (v.type.equals(typeString))
                 return v;
+
 
         throw new IllegalArgumentException("Unknown register type: " + typeString);
     }
