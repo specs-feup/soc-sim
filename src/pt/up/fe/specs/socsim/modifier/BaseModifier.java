@@ -22,4 +22,14 @@ public abstract class BaseModifier implements Modifier {
     protected Module getModule() { return this.module; }
 
     protected String getCode() { return this.code; }
+
+    @Override
+    public void modifyToFile(String filepath) {
+        try {
+            String modifiedCode = modifyToString();
+            Files.writeString(Path.of(filepath), modifiedCode);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to write modified content to file: " + filepath, e);
+        }
+    }
 }

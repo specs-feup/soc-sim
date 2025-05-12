@@ -86,9 +86,4 @@ public class TestHarnessModifier extends BaseModifier {
 
         return insertPeripheralInstance(code, peripheralInstance);
     }
-
-    @Override
-    public void modifyToFile(String filepath) {
-
-    }
 }

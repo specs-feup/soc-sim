@@ -3,21 +3,21 @@ module <module.lowerName> #(
     parameter type reg_req_t  = logic,
     parameter type reg_rsp_t  = logic,
     parameter type obi_req_t  = logic,
-    parameter type obi_resp_t = logic,
+    parameter type obi_resp_t = logic
 ) (
     input logic clk_i,
     input logic rst_ni,
     <if(module.hasReg)>
     input reg_req_t reg_req_i,
-    output reg_rsp_t reg_rsp_o,
+    output reg_rsp_t reg_rsp_o<if(module.hasObiMaster || module.hasObiSlave)>,<endif>
     <endif>
     <if(module.hasObiMaster)>
     output obi_req_t masters_req_o,
-    output obi_resp_t masters_resp_i,
+    output obi_resp_t masters_resp_i<if(module.hasObiSlave)>,<endif>
     <endif>
     <if(module.hasObiSlave)>
     input obi_req_t slave_req_i,
-    output obi_resp_t slave_resp_o,
+    output obi_resp_t slave_resp_o
     <endif>
 );
 

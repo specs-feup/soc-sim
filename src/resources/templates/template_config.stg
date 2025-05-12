@@ -1,5 +1,4 @@
 config_verilog(module) ::= <<
-
 CAPI=2:
 
 name: "example:ip:<module.lowerName>"
@@ -19,7 +18,6 @@ targets:
 >>
 
 config_dpi(module) ::= <<
-
 CAPI=2:
 
 name: "example:ip:<module.lowerName>dpi:0.1"

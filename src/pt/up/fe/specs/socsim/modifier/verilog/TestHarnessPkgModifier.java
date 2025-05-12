@@ -81,9 +81,4 @@ public class TestHarnessPkgModifier extends BaseModifier {
 
         return updatedCode;
     }
-
-    @Override
-    public void modifyToFile(String filepath) {
-
-    }
 }

@@ -11,7 +11,7 @@ public class CoreFileModifier extends BaseModifier {
     private static final String FILESET_DEPEND_PATTERN = "files_examples:\\s*\\n\\s*depend:\\s*\\n(.*?)(?=\\s*files:)";
     private static final String VERILATOR_WAIVER_PATTERN = "files_verilator_waiver:\\s*\\n\\s*files:\\s*\\n(.*?)(?=\\s*file_type:)";
     private static final String TARGET_FILESETS_PATTERN = "default:.*?filesets:\\s*\\n(.*?)(?=\\s*toplevel:)";
-
+    private static final String UARTDPI_ENTRY_PATTERN = "(uartdpi:\\s*\\n\\s*depend:\\s*\\n\\s*- lowrisc:dv_dpi:uartdpi\\s*\\n)";
     public CoreFileModifier(Module module, String filepath) throws IOException {
         super(module, filepath);
     }
@@ -22,17 +22,11 @@ public class CoreFileModifier extends BaseModifier {
 
         content = insertDependency(content, FILESET_DEPEND_PATTERN,
                 "    - example:ip:" + getModule().name().toLowerCase());
-
         content = insertVerilatorWaiver(content);
-
+        content = insertDpiDependencySection(content);
         content = insertDpiDependency(content);
 
         return content;
-    }
-
-    @Override
-    public void modifyToFile(String filepath)  {
-
     }
 
     private String insertDependency(String content, String pattern, String newEntry) {
@@ -77,6 +71,28 @@ public class CoreFileModifier extends BaseModifier {
         throw new IllegalStateException("Could not find verilator waiver section in core file");
     }
 
+
+    private String insertDpiDependencySection(String content) {
+        Pattern p = Pattern.compile(UARTDPI_ENTRY_PATTERN, Pattern.DOTALL);
+        Matcher m = p.matcher(content);
+
+        if (m.find()) {
+            String uartDpiEntry = m.group(1).trim();
+
+            String moduleName = getModule().name().toLowerCase();
+            String newDpiEntry = String.format(
+                    "\n\n  %sdpi:\n    depend:\n      - example:ip:%sdpi:0.1",
+                    moduleName,
+                    moduleName
+            );
+
+            return content.replaceFirst(Pattern.quote(uartDpiEntry), uartDpiEntry + newDpiEntry);
+        }
+
+        throw new IllegalStateException("Could not find uartdpi section in core file");
+    }
+
+
     private String insertDpiDependency(String content) {
         Pattern p = Pattern.compile(TARGET_FILESETS_PATTERN, Pattern.DOTALL);
         Matcher m = p.matcher(content);
@@ -91,6 +107,7 @@ public class CoreFileModifier extends BaseModifier {
 
             return content.replaceFirst(Pattern.quote(m.group(1)), updatedFilesets);
         }
+
         throw new IllegalStateException("Could not find target filesets section in core file");
     }
 }
