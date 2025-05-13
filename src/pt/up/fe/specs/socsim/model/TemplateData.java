@@ -21,6 +21,9 @@ public class TemplateData {
     public final Endpoint e1;
     public final Endpoint e2;
 
+    public final String e1Address;
+    public final String e2Address;
+
     public final SocketOptions opt1;
     public final SocketOptions opt2;
 
@@ -56,6 +59,9 @@ public class TemplateData {
 
         this.e1 = config.communication().e1();
         this.e2 = config.communication().e2();
+
+        this.e1Address = this.e1.address();
+        this.e2Address = this.e2.address();
 
         this.opt1 = config.communication().e1().sockopts();
         this.opt2 = config.communication().e2().sockopts();

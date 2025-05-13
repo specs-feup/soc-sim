@@ -30,7 +30,7 @@ dpi_source(config) ::= <<
 #include \<string.h>
 #include \<zmq.h>
 
-#define <config.moduleUpperName>_ADDRESS "tcp://*:5555"
+#define <config.moduleUpperName>_ADDRESS "<config.e2Address>"
 #define <config.moduleUpperName>_BUFFER_SIZE 1024
 
 static cipc **<config.moduleLowerName>_server = NULL;
@@ -79,7 +79,7 @@ void <config.moduleLowerName>_comm_send(<config.dpiSendSignature>) {
 
   size_t length = snprintf(buffer, sizeof(buffer), "<config.dpiSendFormat>", <config.dpiSendCallArgs>);
 
-  if ((*<config.moduleLowerName>_server)->send((*<config.lowerName>_server)->context, buffer, length) != CIPC_OK) {
+  if ((*<config.moduleLowerName>_server)->send((*<config.moduleLowerName>_server)->context, buffer, length) != CIPC_OK) {
     printf("Failed to send reply!\\n");
   } else {
     printf("Sent: <config.dpiSendFormat>\\n", <config.dpiSendCallArgs>);

@@ -1,7 +1,7 @@
 {
   "paths": {
     "soc": "/home/pedro-ramalho/x-heep",
-    "simulator": "/full/path/to/simulator"
+    "sim": "/full/path/to/simulator"
   },
   "communication": {
     "protocol": "zmq",
@@ -32,7 +32,7 @@
   },
   "module": {
     "name": "generated_itf",
-    "offset": "5000",
+    "offset": "6000",
     "size": "100",
     "interfaces": {
       "reg": true,
