@@ -138,8 +138,4 @@ public class Generator {
         );
         return new EmitterTask(emitter, ROOT_DIR + formattedPath);
     }
-
-    private String path(String relativePath) {
-        return ROOT_DIR + relativePath;
-    }
 }
