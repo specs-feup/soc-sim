@@ -23,6 +23,13 @@ module <module.lowerName> #(
 
   <module.templateRegisters:{ reg | <reg.verilogType> [<reg.widthMinusOne>:0] <reg.name>;
   }>
+
+  <if(module.hasReg)>
+  assign reg_rsp_o.error = 1'b0;
+  assign reg_rsp_o.ready = 1'b1;
+  assign reg_rsp_o.rdata = 32'b0;
+  <endif>
+
   import "DPI-C" function void <module.lowerName>_comm_init();
   import "DPI-C" function void <module.lowerName>_comm_free();
   import "DPI-C" function void <module.lowerName>_comm_send(<module.dpiSendSignature>);
@@ -53,4 +60,5 @@ module <module.lowerName> #(
   end
 
 endmodule
+
 >>

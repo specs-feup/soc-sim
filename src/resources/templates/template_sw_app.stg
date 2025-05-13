@@ -9,7 +9,7 @@ sw_app(module) ::= <<
 
 #define <module.upperName>_START_ADDRESS (EXT_PERIPHERAL_START_ADDRESS + 0x0<module.offset>)
 #define <module.upperName>_SIZE 0x0<module.size>
-#define <module.upperName>_END_ADDRESS (<module.upperName>_START_ADDRESS + SPECSITF_SIZE)
+#define <module.upperName>_END_ADDRESS (<module.upperName>_START_ADDRESS + <module.upperName>_SIZE)
 
 int main(int argc, char *argv[]) {
   volatile static uint32_t *<module.lowerName>_cmem_ptr = (<module.upperName>_START_ADDRESS);

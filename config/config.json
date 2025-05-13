@@ -1,5 +1,35 @@
 {
-  "path_to_soc": "/home/pedro-ramalho/x-heep",
+  "paths": {
+    "soc": "/home/pedro-ramalho/x-heep",
+    "simulator": "/full/path/to/simulator"
+  },
+  "communication": {
+    "protocol": "zmq",
+    "settings": {
+      "client": {
+        "mode": "connect",
+        "address": "tcp://localhost:5556",
+        "sockopts": {
+          "linger": 0,
+          "sndhwm": 1000,
+          "rcvhwm": 1000,
+          "sndtimeo": 0,
+          "rcvtimeo": 0
+        }
+      },
+      "server": {
+        "mode": "bind",
+        "address": "tcp://*:5556",
+        "sockopts": {
+          "linger": 0,
+          "sndhwm": 1000,
+          "rcvhwm": 1000,
+          "sndtimeo": 0,
+          "rcvtimeo": 0
+        }
+      }
+    }
+  },
   "module": {
     "name": "generated_itf",
     "offset": "5000",
