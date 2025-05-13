@@ -9,6 +9,7 @@ import pt.up.fe.specs.socsim.emitter.template.dpi.DpiHeaderFileEmitter;
 import pt.up.fe.specs.socsim.emitter.template.dpi.DpiSourceFileEmitter;
 import pt.up.fe.specs.socsim.emitter.template.verilog.VerilogInterfaceEmitter;
 import pt.up.fe.specs.socsim.model.Module;
+import pt.up.fe.specs.socsim.model.config.Config;
 import pt.up.fe.specs.socsim.modifier.ModifierTask;
 import pt.up.fe.specs.socsim.modifier.core.CoreFileModifier;
 import pt.up.fe.specs.socsim.modifier.verilog.TestHarnessModifier;
@@ -26,12 +27,16 @@ import java.util.List;
 
 public class Generator {
     private static final String ROOT_DIR = "/home/pedro-ramalho/x-heep";
+    private final Config config;
     private final Module module;
     private final List<EmitterTask> emitterTasks;
     private final List<ModifierTask> modifierTasks;
 
     public Generator(String configPath) throws IOException {
-        this.module = ConfigParser.parse(configPath);
+        this.config = ConfigParser.parse(configPath);
+
+        this.module = this.config.module();
+
         this.emitterTasks = buildEmitterTasks();
         this.modifierTasks = buildModifierTasks();
     }

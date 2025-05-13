@@ -4,7 +4,7 @@ import pt.up.fe.specs.socsim.model.config.communication.CommunicationProtocol;
 
 public enum EndpointMode {
     BIND("bind"),
-    CONNECT("tcp");
+    CONNECT("connect");
 
     private final String mode;
 
@@ -21,6 +21,6 @@ public enum EndpointMode {
             if (v.mode.equals(modeString))
                 return v;
 
-        throw new IllegalArgumentException("Unknown register type: " + modeString);
+        throw new IllegalArgumentException("Unknown endpoint mode type: " + modeString);
     }
 }

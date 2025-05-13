@@ -21,6 +21,6 @@ public enum CommunicationProtocol {
             if (v.protocol.equals(protocolString))
                 return v;
 
-        throw new IllegalArgumentException("Unknown register type: " + protocolString);
+        throw new IllegalArgumentException("Unknown protocol: " + protocolString);
     }
 }
