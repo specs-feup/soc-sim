@@ -124,6 +124,38 @@ public class JsonReader {
         return getNode(path).isPresent();
     }
 
+    public Set<String> getKeys() {
+        if (!root.isObject()) return Collections.emptySet();
+
+        Iterator<String> fieldNames = root.fieldNames();
+
+        Set<String> keys = new HashSet<>();
+
+        while (fieldNames.hasNext()) {
+            keys.add(fieldNames.next());
+        }
+
+        return keys;
+    }
+
+    public Object get(String key) {
+        JsonNode node = root.get(key);
+
+        if (node == null || node.isNull()) return null;
+
+        if (node.isInt()) return node.asInt();
+
+        if (node.isLong()) return node.asLong();
+
+        if (node.isDouble()) return node.asDouble();
+
+        if (node.isBoolean()) return node.asBoolean();
+
+        if (node.isTextual()) return node.asText();
+
+        return node.toString();
+    }
+
     public JsonNode getRootNode() {
         return root;
     }

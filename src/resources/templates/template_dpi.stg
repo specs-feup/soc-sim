@@ -1,28 +1,28 @@
-dpi_header(module) ::= <<
-#ifndef <module.upperName>_DPI_H
-#define <module.upperName>_DPI_H
+dpi_header(config) ::= <<
+#ifndef <config.moduleUpperName>_DPI_H
+#define <config.moduleUpperName>_DPI_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void <module.lowerName>_comm_init();
+void <config.moduleLowerName>_comm_init();
 
-void <module.lowerName>_comm_free();
+void <config.moduleLowerName>_comm_free();
 
-void <module.lowerName>_comm_send(<module.dpiSendSignature>);
+void <config.moduleLowerName>_comm_send(<config.dpiSendSignature>);
 
-void <module.lowerName>_comm_recv(<module.dpiRecvPointerParams>);
+void <config.moduleLowerName>_comm_recv(<config.dpiRecvPointerParams>);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // <module.upperName>_DPI_H
+#endif // <config.moduleUpperName>_DPI_H
 >>
 
-dpi_source(module) ::= <<
-#include "<module.lowerName>dpi.h"
+dpi_source(config) ::= <<
+#include "<config.moduleLowerName>dpi.h"
 #include "backend/cipc_zmq.h"
 #include \<cipc.h>
 #include \<stdio.h>
@@ -30,66 +30,69 @@ dpi_source(module) ::= <<
 #include \<string.h>
 #include \<zmq.h>
 
-#define <module.upperName>_ADDRESS "tcp://*:5555"
-#define <module.upperName>_BUFFER_SIZE 1024
+#define <config.moduleUpperName>_ADDRESS "<config.e2Address>"
+#define <config.moduleUpperName>_BUFFER_SIZE 1024
 
-static cipc **<module.lowerName>_server = NULL;
+static cipc **<config.moduleLowerName>_server = NULL;
 
-void <module.lowerName>_comm_init() {
-  <module.lowerName>_server = (cipc**)malloc(sizeof(cipc*));
-  if (!<module.lowerName>_server) {
+void <config.moduleLowerName>_comm_init() {
+  <config.moduleLowerName>_server = (cipc**)malloc(sizeof(cipc*));
+  if (!<config.moduleLowerName>_server) {
     printf("Failed to allocate memory for server!\\n");
 
     exit(EXIT_FAILURE);
   }
 
-  *<module.lowerName>_server = cipc_create(CIPC_PROTOCOL_ZMQ);
-  if (!(*<module.lowerName>_server)) {
+  *<config.moduleLowerName>_server = cipc_create(CIPC_PROTOCOL_ZMQ);
+  if (!(*<config.moduleLowerName>_server)) {
     printf("Failed to create server!\\n");
 
     exit(EXIT_FAILURE);
   }
 
-  cipc_zmq_config *config = cipc_zmq_config_rep(<module.upperName>_ADDRESS);
-  if ((*<module.lowerName>_server)->init(&(*<module.lowerName>_server)->context, config) != CIPC_OK) {
+  cipc_zmq_config *config = cipc_zmq_config_rep(<config.moduleUpperName>_ADDRESS);
+<config.opt2Entries:{entry |
+  config->sockopt_<entry.key> = <entry.value>;
+}>
+  if ((*<config.moduleLowerName>_server)->init(&(*<config.moduleLowerName>_server)->context, config) != CIPC_OK) {
     printf("Failed to initialize server!\\n");
 
-    <module.lowerName>_comm_free();
+    <config.moduleLowerName>_comm_free();
 
     exit(EXIT_FAILURE);
   }
 }
 
-void <module.lowerName>_comm_free() {
-  if (<module.lowerName>_server) {
-    if (*<module.lowerName>_server)
-      cipc_free(*<module.lowerName>_server);
+void <config.moduleLowerName>_comm_free() {
+  if (<config.moduleLowerName>_server) {
+    if (*<config.moduleLowerName>_server)
+      cipc_free(*<config.moduleLowerName>_server);
 
-    free(<module.lowerName>_server);
+    free(<config.moduleLowerName>_server);
 
-    <module.lowerName>_server = NULL;
+    <config.moduleLowerName>_server = NULL;
   }
 }
 
-void <module.lowerName>_comm_send(<module.dpiSendSignature>) {
-  char buffer[<module.upperName>_BUFFER_SIZE] = {0};
+void <config.moduleLowerName>_comm_send(<config.dpiSendSignature>) {
+  char buffer[<config.moduleUpperName>_BUFFER_SIZE] = {0};
 
-  size_t length = snprintf(buffer, sizeof(buffer), "<module.dpiSendFormat>", <module.dpiSendCallArgs>);
+  size_t length = snprintf(buffer, sizeof(buffer), "<config.dpiSendFormat>", <config.dpiSendCallArgs>);
 
-  if ((*<module.lowerName>_server)->send((*<module.lowerName>_server)->context, buffer, length) != CIPC_OK) {
+  if ((*<config.moduleLowerName>_server)->send((*<config.moduleLowerName>_server)->context, buffer, length) != CIPC_OK) {
     printf("Failed to send reply!\\n");
   } else {
-    printf("Sent: <module.dpiSendFormat>\\n", <module.dpiSendCallArgs>);
+    printf("Sent: <config.dpiSendFormat>\\n", <config.dpiSendCallArgs>);
   }
 }
 
-void <module.lowerName>_comm_recv(<module.dpiRecvPointerParams>) {
-  char buffer[<module.upperName>_BUFFER_SIZE] = { 0 };
+void <config.moduleLowerName>_comm_recv(<config.dpiRecvPointerParams>) {
+  char buffer[<config.moduleUpperName>_BUFFER_SIZE] = { 0 };
 
-  if ((*<module.lowerName>_server)->recv((*<module.lowerName>_server)->context, buffer, sizeof(buffer)) != CIPC_OK)
+  if ((*<config.moduleLowerName>_server)->recv((*<config.moduleLowerName>_server)->context, buffer, sizeof(buffer)) != CIPC_OK)
     printf("Failed to receive message!\\n");
 
-  if (sscanf(buffer, "<module.dpiRecvFormat>", <module.dpiRecvCallArgs>) != <module.registerCount>)
+  if (sscanf(buffer, "<config.dpiRecvFormat>", <config.dpiRecvCallArgs>) != <config.moduleRegisterCount>)
     printf("Failed to parse received data!\\n");
 }
 >>

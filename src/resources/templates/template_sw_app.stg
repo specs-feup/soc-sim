@@ -1,4 +1,4 @@
-sw_app(module) ::= <<
+sw_app(config) ::= <<
 
 #include \<stddef.h>
 #include \<stdint.h>
@@ -7,13 +7,13 @@ sw_app(module) ::= <<
 
 #include "core_v_mini_mcu.h"
 
-#define <module.upperName>_START_ADDRESS (EXT_PERIPHERAL_START_ADDRESS + 0x0<module.offset>)
-#define <module.upperName>_SIZE 0x0<module.size>
-#define <module.upperName>_END_ADDRESS (<module.upperName>_START_ADDRESS + <module.upperName>_SIZE)
+#define <config.moduleUpperName>_START_ADDRESS (EXT_PERIPHERAL_START_ADDRESS + 0x0<config.moduleOffset>)
+#define <config.moduleUpperName>_SIZE 0x0<config.moduleSize>
+#define <config.moduleUpperName>_END_ADDRESS (<config.moduleUpperName>_START_ADDRESS + <config.moduleUpperName>_SIZE)
 
 int main(int argc, char *argv[]) {
-  volatile static uint32_t *<module.lowerName>_cmem_ptr = (<module.upperName>_START_ADDRESS);
-  <module.lowerName>_cmem_ptr[0] = 0x01;
+  volatile static uint32_t *<config.moduleLowerName>_cmem_ptr = (<config.moduleUpperName>_START_ADDRESS);
+  <config.moduleLowerName>_cmem_ptr[0] = 0x01;
 
   return EXIT_SUCCESS;
 }

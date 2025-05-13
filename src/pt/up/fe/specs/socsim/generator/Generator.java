@@ -9,6 +9,7 @@ import pt.up.fe.specs.socsim.emitter.template.dpi.DpiHeaderFileEmitter;
 import pt.up.fe.specs.socsim.emitter.template.dpi.DpiSourceFileEmitter;
 import pt.up.fe.specs.socsim.emitter.template.verilog.VerilogInterfaceEmitter;
 import pt.up.fe.specs.socsim.model.Module;
+import pt.up.fe.specs.socsim.model.config.Config;
 import pt.up.fe.specs.socsim.modifier.ModifierTask;
 import pt.up.fe.specs.socsim.modifier.core.CoreFileModifier;
 import pt.up.fe.specs.socsim.modifier.verilog.TestHarnessModifier;
@@ -26,12 +27,16 @@ import java.util.List;
 
 public class Generator {
     private static final String ROOT_DIR = "/home/pedro-ramalho/x-heep";
+    private final Config config;
     private final Module module;
     private final List<EmitterTask> emitterTasks;
     private final List<ModifierTask> modifierTasks;
 
     public Generator(String configPath) throws IOException {
-        this.module = ConfigParser.parse(configPath);
+        this.config = ConfigParser.parse(configPath);
+
+        this.module = this.config.module();
+
         this.emitterTasks = buildEmitterTasks();
         this.modifierTasks = buildModifierTasks();
     }
@@ -48,13 +53,13 @@ public class Generator {
 
     private List<EmitterTask> buildEmitterTasks() {
         return List.of(
-            task(new VerilogInterfaceEmitter(module), "/hw/ip_examples/%s/%s.sv"),
-            task(new ConfigFileEmitter(module, ConfigFileType.VLT), "/hw/ip_examples/%s/%s.vlt"),
-            task(new ConfigFileEmitter(module, ConfigFileType.VERILOG), "/hw/ip_examples/%s/%s.core"),
-            task(new DpiHeaderFileEmitter(module), "/hw/ip_examples/%s/dpi/%sdpi.h"),
-            task(new DpiSourceFileEmitter(module), "/hw/ip_examples/%s/dpi/%sdpi.c"),
-            task(new ConfigFileEmitter(module, ConfigFileType.DPI), "/hw/ip_examples/%s/dpi/%s.core"),
-            task(new SwAppEmitter(module), "/sw/applications/%s/main.c")
+            task(new VerilogInterfaceEmitter(this.config), "/hw/ip_examples/%s/%s.sv"),
+            task(new ConfigFileEmitter(this.config, ConfigFileType.VLT), "/hw/ip_examples/%s/%s.vlt"),
+            task(new ConfigFileEmitter(this.config, ConfigFileType.VERILOG), "/hw/ip_examples/%s/%s.core"),
+            task(new DpiHeaderFileEmitter(this.config), "/hw/ip_examples/%s/dpi/%sdpi.h"),
+            task(new DpiSourceFileEmitter(this.config), "/hw/ip_examples/%s/dpi/%sdpi.c"),
+            task(new ConfigFileEmitter(this.config, ConfigFileType.DPI), "/hw/ip_examples/%s/dpi/%s.core"),
+            task(new SwAppEmitter(this.config), "/sw/applications/%s/main.c")
         );
     }
 
@@ -132,9 +137,5 @@ public class Generator {
             module.name()
         );
         return new EmitterTask(emitter, ROOT_DIR + formattedPath);
-    }
-
-    private String path(String relativePath) {
-        return ROOT_DIR + relativePath;
     }
 }

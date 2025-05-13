@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class Launcher {
     public static void main(String[] args) throws IOException {
-        Generator generator = new Generator("config/config.json");
+        Generator generator = new Generator(args[0]);
         generator.run();
     }
 }

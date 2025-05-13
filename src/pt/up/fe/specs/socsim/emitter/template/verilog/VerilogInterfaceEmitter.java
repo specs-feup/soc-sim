@@ -2,10 +2,11 @@ package pt.up.fe.specs.socsim.emitter.template.verilog;
 
 import pt.up.fe.specs.socsim.emitter.template.TemplateEmitter;
 import pt.up.fe.specs.socsim.model.Module;
+import pt.up.fe.specs.socsim.model.config.Config;
 
 public class VerilogInterfaceEmitter extends TemplateEmitter {
-    public VerilogInterfaceEmitter(Module module) {
-        super(module, "/templates/template_sv_interface.stg");
+    public VerilogInterfaceEmitter(Config config) {
+        super(config, "/templates/template_sv_interface.stg");
     }
 
     @Override
