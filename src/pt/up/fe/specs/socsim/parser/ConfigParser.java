@@ -31,10 +31,12 @@ public class ConfigParser {
 
     private static Module parseModule(JsonReader reader) {
         String name = reader.getStringOrDefault("name", "unknown");
+        String size = reader.getStringOrDefault("size", "0");
+        String offset = reader.getStringOrDefault("offset", "0");
+
         Interfaces interfaces = parseInterfaces(reader);
+
         List<Register> registers = parseRegisters(reader);
-        String size = parseSize(reader);
-        String offset = parseOffset(reader);
 
         return new Module(name, interfaces, registers, offset, size);
     }
@@ -65,18 +67,10 @@ public class ConfigParser {
         String name = reader.getStringOrDefault("name", "unknown");
         RegisterVerilogType verilogType = RegisterVerilogType.fromString(reader.getStringOrDefault("verilog_type", "unknown"));
         RegisterDpiType dpiType = RegisterDpiType.fromString(reader.getStringOrDefault("dpi_type", "unknown"));
-        Integer width = reader.getIntOrDefault("width", -1);
+        Integer width = reader.getIntOrDefault("width", 0);
         Integer initial = reader.getIntOrDefault("initial", 0);
 
         return new Register(name, verilogType, dpiType, width, initial);
-    }
-
-    private static String parseOffset(JsonReader reader) {
-        return reader.getStringOrDefault("offset", "0");
-    }
-
-    private static String parseSize(JsonReader reader) {
-        return reader.getStringOrDefault("size", "0");
     }
 
     private static Paths parsePaths(JsonReader reader) {
