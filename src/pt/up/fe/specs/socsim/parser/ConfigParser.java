@@ -3,7 +3,7 @@ package pt.up.fe.specs.socsim.parser;
 import pt.up.fe.specs.socsim.model.Module;
 import pt.up.fe.specs.socsim.model.config.Config;
 import pt.up.fe.specs.socsim.model.config.Paths;
-import pt.up.fe.specs.socsim.model.config.Sockopts;
+import pt.up.fe.specs.socsim.model.config.SocketOptions;
 import pt.up.fe.specs.socsim.model.config.communication.Communication;
 import pt.up.fe.specs.socsim.model.config.communication.CommunicationProtocol;
 import pt.up.fe.specs.socsim.model.config.endpoint.Endpoint;
@@ -15,8 +15,7 @@ import pt.up.fe.specs.socsim.model.register.RegisterVerilogType;
 import pt.up.fe.specs.socsim.reader.JsonReader;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class ConfigParser {
     public static Config parse(String path) throws IOException {
@@ -97,14 +96,13 @@ public class ConfigParser {
         String address = reader.getStringOrDefault("address", "unknown");
 
         JsonReader sockoptsReader = reader.getObject("sockopts").orElseThrow();
-        Sockopts sockopts = new Sockopts(
-            sockoptsReader.getIntOrDefault("linger", 0),
-            sockoptsReader.getIntOrDefault("sndhwm", 0),
-            sockoptsReader.getIntOrDefault("rcvhwm", 0),
-            sockoptsReader.getIntOrDefault("sndtimeo", 0),
-            sockoptsReader.getIntOrDefault("rcvtimeo", 0)
-        );
 
-        return new Endpoint(mode, address, sockopts);
+        Map<String, String> sockoptMap = new HashMap<>();
+
+        sockoptsReader.getKeys().forEach(key -> sockoptMap.put(key, sockoptsReader.getStringOrDefault(key, "unknown")));
+
+        SocketOptions options = new SocketOptions(sockoptMap);
+
+        return new Endpoint(mode, address, options);
     }
 }

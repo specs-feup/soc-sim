@@ -1,5 +1,5 @@
-sv_interface(module) ::= <<
-module <module.lowerName> #(
+sv_interface(config) ::= <<
+module <config.moduleLowerName> #(
     parameter type reg_req_t  = logic,
     parameter type reg_rsp_t  = logic,
     parameter type obi_req_t  = logic,
@@ -7,55 +7,55 @@ module <module.lowerName> #(
 ) (
     input logic clk_i,
     input logic rst_ni,
-    <if(module.hasReg)>
+    <if(config.moduleHasReg)>
     input reg_req_t reg_req_i,
-    output reg_rsp_t reg_rsp_o<if(module.hasObiMaster || module.hasObiSlave)>,<endif>
+    output reg_rsp_t reg_rsp_o<if(config.moduleHasObiMaster || config.moduleHasObiSlave)>,<endif>
     <endif>
-    <if(module.hasObiMaster)>
+    <if(config.moduleHasObiMaster)>
     output obi_req_t masters_req_o,
-    output obi_resp_t masters_resp_i<if(module.hasObiSlave)>,<endif>
+    output obi_resp_t masters_resp_i<if(config.moduleHasObiSlave)>,<endif>
     <endif>
-    <if(module.hasObiSlave)>
+    <if(config.moduleHasObiSlave)>
     input obi_req_t slave_req_i,
     output obi_resp_t slave_resp_o
     <endif>
 );
 
-  <module.templateRegisters:{ reg | <reg.verilogType> [<reg.widthMinusOne>:0] <reg.name>;
+  <config.moduleTemplateRegisters:{ reg | <reg.verilogType> [<reg.widthMinusOne>:0] <reg.name>;
   }>
 
-  <if(module.hasReg)>
+  <if(config.moduleHasReg)>
   assign reg_rsp_o.error = 1'b0;
   assign reg_rsp_o.ready = 1'b1;
   assign reg_rsp_o.rdata = 32'b0;
   <endif>
 
-  import "DPI-C" function void <module.lowerName>_comm_init();
-  import "DPI-C" function void <module.lowerName>_comm_free();
-  import "DPI-C" function void <module.lowerName>_comm_send(<module.dpiSendSignature>);
-  import "DPI-C" function void <module.lowerName>_comm_recv(<module.dpiRecvSignature>);
+  import "DPI-C" function void <config.moduleLowerName>_comm_init();
+  import "DPI-C" function void <config.moduleLowerName>_comm_free();
+  import "DPI-C" function void <config.moduleLowerName>_comm_send(<config.dpiSendSignature>);
+  import "DPI-C" function void <config.moduleLowerName>_comm_recv(<config.dpiRecvSignature>);
 
   initial begin
-    <module.lowerName>_comm_init();
-    <module.templateRegisters:{ reg | <reg.name> = <reg.initial>;
+    <config.moduleLowerName>_comm_init();
+    <config.moduleTemplateRegisters:{ reg | <reg.name> = <reg.initial>;
     }>
   end
 
   final begin
-    <module.lowerName>_comm_free();
+    <config.moduleLowerName>_comm_free();
   end
 
   always_ff @(posedge clk_i or negedge rst_ni) begin
     if (!rst_ni) begin
     end else begin
-      <module.lowerName>_comm_send(<module.dpiSendCallArgs>);
+      <config.moduleLowerName>_comm_send(<config.dpiSendCallArgs>);
     end
   end
 
   always_ff @(posedge clk_i or negedge rst_ni) begin
     if (!rst_ni) begin
     end else begin
-      <module.lowerName>_comm_recv(<module.dpiRecvCallArgs>);
+      <config.moduleLowerName>_comm_recv(<config.dpiRecvCallArgs>);
     end
   end
 

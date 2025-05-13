@@ -5,7 +5,12 @@ import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupString;
 import pt.up.fe.specs.socsim.emitter.Emitter;
 import pt.up.fe.specs.socsim.model.Module;
-import pt.up.fe.specs.socsim.model.ModuleTemplateData;
+import pt.up.fe.specs.socsim.model.TemplateData;
+import pt.up.fe.specs.socsim.model.config.Config;
+import pt.up.fe.specs.socsim.model.config.Paths;
+import pt.up.fe.specs.socsim.model.config.SocketOptions;
+import pt.up.fe.specs.socsim.model.config.communication.Communication;
+import pt.up.fe.specs.socsim.model.config.endpoint.Endpoint;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,12 +19,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public abstract class TemplateEmitter implements Emitter {
-    private final Module module;
+    private final Config config;
     private final STGroup templates;
     private final String templateFile;
 
-    protected TemplateEmitter(Module module, String templateFile) {
-        this.module = module;
+    protected TemplateEmitter(Config config, String templateFile) {
+        this.config = config;
+
         this.templateFile = templateFile;
         this.templates = load();
     }
@@ -48,7 +54,7 @@ public abstract class TemplateEmitter implements Emitter {
         if (template == null)
             throw new IllegalStateException("Template '" + getTemplateName() + "' not found in " + templateFile);
 
-        template.add("module", new ModuleTemplateData(this.module));
+        template.add("config", new TemplateData(this.config));
 
         return template.render();
     }

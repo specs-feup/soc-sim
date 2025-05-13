@@ -1,13 +1,13 @@
-config_verilog(module) ::= <<
+config_verilog(config) ::= <<
 CAPI=2:
 
-name: "example:ip:<module.lowerName>"
+name: "example:ip:<config.moduleLowerName>"
 description: "core-v-mini-mcu iffifo peripheral"
 
 filesets:
   files_rtl:
     files:
-    - <module.lowerName>.sv
+    - <config.moduleLowerName>.sv
     file_type: systemVerilogSource
 
 targets:
@@ -17,17 +17,17 @@ targets:
 
 >>
 
-config_dpi(module) ::= <<
+config_dpi(config) ::= <<
 CAPI=2:
 
-name: "example:ip:<module.lowerName>dpi:0.1"
+name: "example:ip:<config.moduleLowerName>dpi:0.1"
 description: "UART-DPI"
 
 filesets:
   files_rtl:
     files:
-      - <module.lowerName>dpi.c: { file_type: cppSource }
-      - <module.lowerName>dpi.h: { file_type: cppSource, is_include_file: true }
+      - <config.moduleLowerName>dpi.c: { file_type: cppSource }
+      - <config.moduleLowerName>dpi.h: { file_type: cppSource, is_include_file: true }
 
 targets:
   default:
@@ -36,11 +36,11 @@ targets:
 
 >>
 
-config_vlt(module) ::= <<
+config_vlt(config) ::= <<
 
 
 `verilator_config
 
-lint_off -rule UNUSED -file "*/<module.lowerName>/<module.lowerName>.sv" -match "*"
+lint_off -rule UNUSED -file "*/<config.moduleLowerName>/<config.moduleLowerName>.sv" -match "*"
 
 >>
