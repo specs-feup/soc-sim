@@ -30,8 +30,8 @@ public class ConfigParser {
 
     private static Module parseModule(JsonReader reader) {
         String name = reader.getStringOrDefault("name", "unknown");
-        String size = reader.getStringOrDefault("size", "0");
-        String offset = reader.getStringOrDefault("offset", "0");
+        Integer offset = reader.getIntOrDefault("offset", 0);
+        Integer size = reader.getIntOrDefault("size", 0);
 
         Interfaces interfaces = parseInterfaces(reader);
 

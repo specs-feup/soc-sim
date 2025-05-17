@@ -37,8 +37,8 @@ public class TestHarnessPkgModifier extends BaseModifier {
 
         String moduleName = getModule().name();
         String moduleNameUpper = getModule().name().toUpperCase();
-        String moduleOffset = getModule().offset();
-        String moduleSize = getModule().size();
+        Integer moduleOffset = getModule().offset();
+        Integer moduleSize = getModule().size();
 
         String newConstants = String.format(
                 "\n  // %s Peripheral\n" +

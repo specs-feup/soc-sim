@@ -32,8 +32,8 @@
   },
   "module": {
     "name": "generated_itf",
-    "offset": "6000",
-    "size": "100",
+    "offset": 6000,
+    "size": 100,
     "interfaces": {
       "reg": true,
       "obi_master": false,

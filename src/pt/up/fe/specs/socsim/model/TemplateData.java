@@ -33,8 +33,8 @@ public class TemplateData {
     public final String moduleLowerName;
     public final String moduleUpperName;
 
-    public final String moduleSize;
-    public final String moduleOffset;
+    public final Integer moduleSize;
+    public final Integer moduleOffset;
 
     public final boolean moduleHasReg;
     public final boolean moduleHasObiMaster;
