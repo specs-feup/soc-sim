@@ -51,9 +51,7 @@ void <config.moduleLowerName>_comm_init() {
   }
 
   cipc_zmq_config *config = cipc_zmq_config_rep(<config.moduleUpperName>_ADDRESS);
-<config.opt2Entries:{entry |
-  config->sockopt_<entry.key> = <entry.value>;
-}>
+
   if ((*<config.moduleLowerName>_server)->init(&(*<config.moduleLowerName>_server)->context, config) != CIPC_OK) {
     printf("Failed to initialize server!\\n");
 

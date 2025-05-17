@@ -21,6 +21,13 @@ public class TemplateData {
     public final Endpoint e1;
     public final Endpoint e2;
 
+    public final Integer e1SendTimeout;
+    public final Integer e1RecvTimeout;
+    public final Integer e1Retries;
+    public final Integer e2SendTimeout;
+    public final Integer e2RecvTimeout;
+    public final Integer e2Retries;
+
     public final String e1Address;
     public final String e2Address;
 
@@ -63,8 +70,16 @@ public class TemplateData {
         this.e1Address = this.e1.address();
         this.e2Address = this.e2.address();
 
-        this.opt1 = config.communication().e1().sockopts();
-        this.opt2 = config.communication().e2().sockopts();
+        this.opt1 = config.communication().e1().options();
+        this.opt2 = config.communication().e2().options();
+
+        this.e1SendTimeout = this.opt1.sendTimeout();
+        this.e1RecvTimeout = this.opt1.recvTimeout();
+        this.e1Retries = this.opt1.retries();
+
+        this.e2SendTimeout = this.opt1.sendTimeout();
+        this.e2RecvTimeout = this.opt1.recvTimeout();
+        this.e2Retries = this.opt1.retries();
 
         this.name = module.name();
         this.moduleLowerName = module.name().toLowerCase();
@@ -91,11 +106,5 @@ public class TemplateData {
         this.dpiRecvFormat = DpiParameterGenerator.generateFormatString(registers.size());
 
         this.moduleRegisterCount = registers.size();
-    }
-
-    public List<Map<String, String>> getOpt2Entries() {
-        return opt2.options().entrySet().stream()
-                .map(entry -> Map.of("key", entry.getKey(), "value", entry.getValue()))
-                .collect(Collectors.toList());
     }
 }

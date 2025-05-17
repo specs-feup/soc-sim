@@ -7,26 +7,16 @@
     "protocol": "zmq",
     "settings": {
       "client": {
-        "mode": "connect",
         "address": "tcp://localhost:5556",
-        "sockopts": {
-          "linger": "0",
-          "sndhwm": "1000",
-          "rcvhwm": "1000",
-          "sndtimeo": "0",
-          "rcvtimeo": "0"
-        }
+        "send_timeout": 0,
+        "recv_timeout": 0,
+        "retries": 0
       },
       "server": {
-        "mode": "bind",
         "address": "tcp://*:5556",
-        "sockopts": {
-          "linger": "0",
-          "sndhwm": "1000",
-          "rcvhwm": "1000",
-          "sndtimeo": "0",
-          "rcvtimeo": "0"
-        }
+        "send_timeout": 0,
+        "recv_timeout": 0,
+        "retries": 0
       }
     }
   },
@@ -41,7 +31,7 @@
     },
     "registers": [
       { "name": "int_reg_1", "verilog_type": "logic", "dpi_type": "int", "width": 32, "initial": 0 },
-      { "name":  "int_reg_2", "verilog_type": "logic", "dpi_type": "int", "width": 32, "initial": 0 }
+      { "name": "int_reg_2", "verilog_type": "logic", "dpi_type": "int", "width": 32, "initial": 0 }
     ]
   }
 }

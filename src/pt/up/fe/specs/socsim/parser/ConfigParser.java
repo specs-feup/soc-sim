@@ -92,17 +92,14 @@ public class ConfigParser {
     }
 
     private static Endpoint parseEndpoint(JsonReader reader) {
-        EndpointMode mode = EndpointMode.fromString(reader.getStringOrDefault("mode", "unknown"));
         String address = reader.getStringOrDefault("address", "unknown");
 
-        JsonReader sockoptsReader = reader.getObject("sockopts").orElseThrow();
+        SocketOptions options = new SocketOptions(
+            reader.getIntOrDefault("send_timeout", 0),
+            reader.getIntOrDefault("recv_timeout", 0),
+            reader.getIntOrDefault("retries", 0)
+        );
 
-        Map<String, String> sockoptMap = new HashMap<>();
-
-        sockoptsReader.getKeys().forEach(key -> sockoptMap.put(key, sockoptsReader.getStringOrDefault(key, "unknown")));
-
-        SocketOptions options = new SocketOptions(sockoptMap);
-
-        return new Endpoint(mode, address, options);
+        return new Endpoint(address, options);
     }
 }
